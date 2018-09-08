@@ -11,6 +11,14 @@ QuranWords Project in development and production environments.
 - Run `docker-compose up`
 - Visit localhost:8000 // or Windows -> http://192.168.99.100:8000/
 
+- connect to django container
+ docker exec -it dz01 sh
+
+- connect to postgresql container
+ docker exec -it quranwords_db_1 sh
+ su postgres
+ psql
+
 ## Production
 - Follow the first 2 steps outlined above
 - Run `docker-compose -f docker-compose.prod.yml up --build -d`
