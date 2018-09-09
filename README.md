@@ -12,10 +12,10 @@ QuranWords Project in development and production environments.
 - Visit localhost:8000 // or Windows -> http://192.168.99.100:8000/
 
 - connect to django container
- docker exec -it dz01 sh
+ docker exec -it web01 sh
 
 - connect to postgresql container
- docker exec -it quranwords_db_1 sh
+ docker exec -it db01 sh
  su postgres
  psql
 
