@@ -1,4 +1,3 @@
-
 '''convert surah.json from quranjson project
 https://github.com/semarketir/quranjson/blob/master/source/surah.json
 to django fixtures file'''
