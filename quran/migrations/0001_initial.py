@@ -16,8 +16,8 @@ class Migration(migrations.Migration):
             fields=[
                 ('surah_id', models.AutoField(
                     primary_key=True, serialize=False)),
-                ('surah_name', models.CharField(max_length=250)),
-                ('surah_ayah_count', models.IntegerField()),
+                ('surah_name', models.CharField(max_length=20)),
+                ('surah_ayah_count', models.PositiveIntegerField()),
             ],
         ),
     ]
