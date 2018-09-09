@@ -5,16 +5,16 @@ from django.db import migrations
 from django.core.management import call_command
 
 fixture_dir = path.abspath(
-    path.join(path.dirname(__file__), '../../fixtures'))
-fixture_filename = 'surah_fixture.json'
+    path.join(path.dirname(__file__), '../fixtures/'))
+fixture_filename = 'surah_data_init.json'
 
 
-def load_fixture(apps, schema_editor):
+def load_surahs(apps, schema_editor):
     fixture_file = path.join(fixture_dir, fixture_filename)
     call_command('loaddata', fixture_file)
 
 
-def unload_fixture(apps, schema_editor):
+def unload_surahs(apps, schema_editor):
     "Brutally deleting all entries for this model..."
 
     Surah = apps.get_model("surah", "Surah")
@@ -24,9 +24,9 @@ def unload_fixture(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('surah', '0001_initial'),
+        ('quran', '0001_initial'),
     ]
 
     operations = [
-        migrations.RunPython(load_fixture, reverse_code=unload_fixture),
+        migrations.RunPython(load_surahs, reverse_code=unload_surahs),
     ]
