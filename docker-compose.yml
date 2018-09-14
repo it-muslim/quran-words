@@ -23,6 +23,14 @@ services:
       - "5432:5432"
     volumes:
       - postgres_database:/var/lib/postgresql/data
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./.env.secret
 volumes:
   postgres_database:
     external: true
