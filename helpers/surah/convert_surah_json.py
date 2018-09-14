@@ -19,8 +19,8 @@ def main():
         {
             "model": "quran.Surah",
             "fields": {
-                "surah_name": element['title'],
-                "surah_ayah_count": element['count']}
+                "name": element['title'],
+                "total_ayahs": element['count']}
         }
         for element in data]
 

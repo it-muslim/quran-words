@@ -1,799 +1,799 @@
 [
     {
         "fields": {
-            "surah_ayah_count": 7,
-            "surah_name": "Al-Fatiha"
+            "name": "Al-Fatiha",
+            "total_ayahs": 7
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 286,
-            "surah_name": "Al-Baqara"
+            "name": "Al-Baqara",
+            "total_ayahs": 286
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 200,
-            "surah_name": "Aal-Imran"
+            "name": "Aal-Imran",
+            "total_ayahs": 200
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 176,
-            "surah_name": "An-Nisaa'"
+            "name": "An-Nisaa'",
+            "total_ayahs": 176
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 120,
-            "surah_name": "Al-Ma'ida"
+            "name": "Al-Ma'ida",
+            "total_ayahs": 120
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 165,
-            "surah_name": "Al-An'am"
+            "name": "Al-An'am",
+            "total_ayahs": 165
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 206,
-            "surah_name": "Al-A'raf"
+            "name": "Al-A'raf",
+            "total_ayahs": 206
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 75,
-            "surah_name": "Al-Anfal"
+            "name": "Al-Anfal",
+            "total_ayahs": 75
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 129,
-            "surah_name": "Al-Tawba"
+            "name": "Al-Tawba",
+            "total_ayahs": 129
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 109,
-            "surah_name": "Yunus"
+            "name": "Yunus",
+            "total_ayahs": 109
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 123,
-            "surah_name": "Hud"
+            "name": "Hud",
+            "total_ayahs": 123
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 111,
-            "surah_name": "Yusuf"
+            "name": "Yusuf",
+            "total_ayahs": 111
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 43,
-            "surah_name": "Ar-Ra'd"
+            "name": "Ar-Ra'd",
+            "total_ayahs": 43
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 52,
-            "surah_name": "Ibrahim"
+            "name": "Ibrahim",
+            "total_ayahs": 52
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 99,
-            "surah_name": "Al-Hijr"
+            "name": "Al-Hijr",
+            "total_ayahs": 99
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 128,
-            "surah_name": "An-Nahl"
+            "name": "An-Nahl",
+            "total_ayahs": 128
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 111,
-            "surah_name": "Al-Israa"
+            "name": "Al-Israa",
+            "total_ayahs": 111
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 110,
-            "surah_name": "Al-Kahf"
+            "name": "Al-Kahf",
+            "total_ayahs": 110
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 98,
-            "surah_name": "Maryam"
+            "name": "Maryam",
+            "total_ayahs": 98
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 135,
-            "surah_name": "Ta-Ha"
+            "name": "Ta-Ha",
+            "total_ayahs": 135
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 112,
-            "surah_name": "Al-Anbiya"
+            "name": "Al-Anbiya",
+            "total_ayahs": 112
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 78,
-            "surah_name": "Al-Hajj"
+            "name": "Al-Hajj",
+            "total_ayahs": 78
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 118,
-            "surah_name": "Al-Muminun"
+            "name": "Al-Muminun",
+            "total_ayahs": 118
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 64,
-            "surah_name": "An-Nur"
+            "name": "An-Nur",
+            "total_ayahs": 64
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 77,
-            "surah_name": "Al-Furqan"
+            "name": "Al-Furqan",
+            "total_ayahs": 77
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 227,
-            "surah_name": "Ash-Shuara"
+            "name": "Ash-Shuara",
+            "total_ayahs": 227
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 93,
-            "surah_name": "An-Naml"
+            "name": "An-Naml",
+            "total_ayahs": 93
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 88,
-            "surah_name": "Al-Qasas"
+            "name": "Al-Qasas",
+            "total_ayahs": 88
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 69,
-            "surah_name": "Al-Ankabut"
+            "name": "Al-Ankabut",
+            "total_ayahs": 69
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 60,
-            "surah_name": "Ar-Rum"
+            "name": "Ar-Rum",
+            "total_ayahs": 60
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 34,
-            "surah_name": "Luqman"
+            "name": "Luqman",
+            "total_ayahs": 34
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 30,
-            "surah_name": "As-Sajdah"
+            "name": "As-Sajdah",
+            "total_ayahs": 30
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 73,
-            "surah_name": "Al-Ahzab"
+            "name": "Al-Ahzab",
+            "total_ayahs": 73
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 54,
-            "surah_name": "Saba"
+            "name": "Saba",
+            "total_ayahs": 54
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 45,
-            "surah_name": "Fatir"
+            "name": "Fatir",
+            "total_ayahs": 45
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 83,
-            "surah_name": "Yasin"
+            "name": "Yasin",
+            "total_ayahs": 83
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 182,
-            "surah_name": "As-Saffat"
+            "name": "As-Saffat",
+            "total_ayahs": 182
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 88,
-            "surah_name": "Sad"
+            "name": "Sad",
+            "total_ayahs": 88
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 75,
-            "surah_name": "Az-Zumar"
+            "name": "Az-Zumar",
+            "total_ayahs": 75
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 85,
-            "surah_name": "Ghafir"
+            "name": "Ghafir",
+            "total_ayahs": 85
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 54,
-            "surah_name": "Fussilat"
+            "name": "Fussilat",
+            "total_ayahs": 54
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 53,
-            "surah_name": "Ash-Shura"
+            "name": "Ash-Shura",
+            "total_ayahs": 53
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 89,
-            "surah_name": "Az-Zukhruf"
+            "name": "Az-Zukhruf",
+            "total_ayahs": 89
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 59,
-            "surah_name": "Ad-Dukhan"
+            "name": "Ad-Dukhan",
+            "total_ayahs": 59
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 37,
-            "surah_name": "Al-Jathiya"
+            "name": "Al-Jathiya",
+            "total_ayahs": 37
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 35,
-            "surah_name": "Al-Ahqaf"
+            "name": "Al-Ahqaf",
+            "total_ayahs": 35
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 38,
-            "surah_name": "Muhammad"
+            "name": "Muhammad",
+            "total_ayahs": 38
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 29,
-            "surah_name": "Al-Fath"
+            "name": "Al-Fath",
+            "total_ayahs": 29
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 18,
-            "surah_name": "Al-Hujurat"
+            "name": "Al-Hujurat",
+            "total_ayahs": 18
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 45,
-            "surah_name": "Qaf"
+            "name": "Qaf",
+            "total_ayahs": 45
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 60,
-            "surah_name": "Az-Zariyat"
+            "name": "Az-Zariyat",
+            "total_ayahs": 60
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 49,
-            "surah_name": "At-Tur"
+            "name": "At-Tur",
+            "total_ayahs": 49
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 62,
-            "surah_name": "An-Najm"
+            "name": "An-Najm",
+            "total_ayahs": 62
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 55,
-            "surah_name": "Al-Qamar"
+            "name": "Al-Qamar",
+            "total_ayahs": 55
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 78,
-            "surah_name": "Ar-Rahman"
+            "name": "Ar-Rahman",
+            "total_ayahs": 78
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 96,
-            "surah_name": "Al-Waqia"
+            "name": "Al-Waqia",
+            "total_ayahs": 96
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 29,
-            "surah_name": "Al-Hadid"
+            "name": "Al-Hadid",
+            "total_ayahs": 29
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 22,
-            "surah_name": "Al-Mujadilah"
+            "name": "Al-Mujadilah",
+            "total_ayahs": 22
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 24,
-            "surah_name": "Al-Hashr"
+            "name": "Al-Hashr",
+            "total_ayahs": 24
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 13,
-            "surah_name": "Al-Mumtahinah"
+            "name": "Al-Mumtahinah",
+            "total_ayahs": 13
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 14,
-            "surah_name": "As-Saff"
+            "name": "As-Saff",
+            "total_ayahs": 14
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 11,
-            "surah_name": "Al-Jumu'ah"
+            "name": "Al-Jumu'ah",
+            "total_ayahs": 11
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 11,
-            "surah_name": "Al-Munafiqun"
+            "name": "Al-Munafiqun",
+            "total_ayahs": 11
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 18,
-            "surah_name": "At-Taghabun"
+            "name": "At-Taghabun",
+            "total_ayahs": 18
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 12,
-            "surah_name": "At-Talaq"
+            "name": "At-Talaq",
+            "total_ayahs": 12
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 12,
-            "surah_name": "At-Tahrim"
+            "name": "At-Tahrim",
+            "total_ayahs": 12
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 30,
-            "surah_name": "Al-Mulk"
+            "name": "Al-Mulk",
+            "total_ayahs": 30
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 52,
-            "surah_name": "Al-Qalam"
+            "name": "Al-Qalam",
+            "total_ayahs": 52
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 52,
-            "surah_name": "Al-Haqqah"
+            "name": "Al-Haqqah",
+            "total_ayahs": 52
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 44,
-            "surah_name": "Al-Ma'arij"
+            "name": "Al-Ma'arij",
+            "total_ayahs": 44
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 28,
-            "surah_name": "Nuh"
+            "name": "Nuh",
+            "total_ayahs": 28
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 28,
-            "surah_name": "Al-Jinn"
+            "name": "Al-Jinn",
+            "total_ayahs": 28
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 20,
-            "surah_name": "Al-Muzzammil"
+            "name": "Al-Muzzammil",
+            "total_ayahs": 20
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 56,
-            "surah_name": "Al-Muddaththir"
+            "name": "Al-Muddaththir",
+            "total_ayahs": 56
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 40,
-            "surah_name": "Al-Qiyamah"
+            "name": "Al-Qiyamah",
+            "total_ayahs": 40
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 31,
-            "surah_name": "Al-Insan"
+            "name": "Al-Insan",
+            "total_ayahs": 31
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 50,
-            "surah_name": "Al-Mursalat"
+            "name": "Al-Mursalat",
+            "total_ayahs": 50
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 40,
-            "surah_name": "An-Naba"
+            "name": "An-Naba",
+            "total_ayahs": 40
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 46,
-            "surah_name": "An-Naziat"
+            "name": "An-Naziat",
+            "total_ayahs": 46
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 42,
-            "surah_name": "Abasa"
+            "name": "Abasa",
+            "total_ayahs": 42
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 29,
-            "surah_name": "At-Takwir"
+            "name": "At-Takwir",
+            "total_ayahs": 29
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 19,
-            "surah_name": "Al-Infitar"
+            "name": "Al-Infitar",
+            "total_ayahs": 19
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 36,
-            "surah_name": "Al-Mutaffifin"
+            "name": "Al-Mutaffifin",
+            "total_ayahs": 36
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 25,
-            "surah_name": "Al-Inshiqaq"
+            "name": "Al-Inshiqaq",
+            "total_ayahs": 25
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 22,
-            "surah_name": "Al-Buruj"
+            "name": "Al-Buruj",
+            "total_ayahs": 22
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 17,
-            "surah_name": "At-Tariq"
+            "name": "At-Tariq",
+            "total_ayahs": 17
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 19,
-            "surah_name": "Al-Ala"
+            "name": "Al-Ala",
+            "total_ayahs": 19
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 26,
-            "surah_name": "Al-Ghashiyah"
+            "name": "Al-Ghashiyah",
+            "total_ayahs": 26
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 30,
-            "surah_name": "Al-Fajr"
+            "name": "Al-Fajr",
+            "total_ayahs": 30
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 20,
-            "surah_name": "Al-Balad"
+            "name": "Al-Balad",
+            "total_ayahs": 20
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 15,
-            "surah_name": "Ash-Shams"
+            "name": "Ash-Shams",
+            "total_ayahs": 15
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 21,
-            "surah_name": "Al-Lail"
+            "name": "Al-Lail",
+            "total_ayahs": 21
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 11,
-            "surah_name": "Ad-Duha"
+            "name": "Ad-Duha",
+            "total_ayahs": 11
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 8,
-            "surah_name": "Ash-Sharh"
+            "name": "Ash-Sharh",
+            "total_ayahs": 8
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 8,
-            "surah_name": "At-Tin"
+            "name": "At-Tin",
+            "total_ayahs": 8
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 19,
-            "surah_name": "Al-Alaq"
+            "name": "Al-Alaq",
+            "total_ayahs": 19
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 5,
-            "surah_name": "Al-Qadr"
+            "name": "Al-Qadr",
+            "total_ayahs": 5
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 8,
-            "surah_name": "Al-Bayinah"
+            "name": "Al-Bayinah",
+            "total_ayahs": 8
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 8,
-            "surah_name": "Az-Zalzalah"
+            "name": "Az-Zalzalah",
+            "total_ayahs": 8
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 11,
-            "surah_name": "Al-Adiyat"
+            "name": "Al-Adiyat",
+            "total_ayahs": 11
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 11,
-            "surah_name": "Al-Qariah"
+            "name": "Al-Qariah",
+            "total_ayahs": 11
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 8,
-            "surah_name": "Al-Takathur"
+            "name": "Al-Takathur",
+            "total_ayahs": 8
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 3,
-            "surah_name": "Al-Asr"
+            "name": "Al-Asr",
+            "total_ayahs": 3
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 9,
-            "surah_name": "Al-Humazah"
+            "name": "Al-Humazah",
+            "total_ayahs": 9
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 5,
-            "surah_name": "Al-Fil"
+            "name": "Al-Fil",
+            "total_ayahs": 5
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 4,
-            "surah_name": "Quraish"
+            "name": "Quraish",
+            "total_ayahs": 4
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 7,
-            "surah_name": "Al-Ma'un"
+            "name": "Al-Ma'un",
+            "total_ayahs": 7
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 3,
-            "surah_name": "Al-Kauthar"
+            "name": "Al-Kauthar",
+            "total_ayahs": 3
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 6,
-            "surah_name": "Al-Kafirun"
+            "name": "Al-Kafirun",
+            "total_ayahs": 6
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 3,
-            "surah_name": "An-Nasr"
+            "name": "An-Nasr",
+            "total_ayahs": 3
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 5,
-            "surah_name": "Al-Masad"
+            "name": "Al-Masad",
+            "total_ayahs": 5
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 4,
-            "surah_name": "Al-Ikhlas"
+            "name": "Al-Ikhlas",
+            "total_ayahs": 4
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 5,
-            "surah_name": "Al-Falaq"
+            "name": "Al-Falaq",
+            "total_ayahs": 5
         },
         "model": "quran.Surah"
     },
     {
         "fields": {
-            "surah_ayah_count": 6,
-            "surah_name": "An-Nas"
+            "name": "An-Nas",
+            "total_ayahs": 6
         },
         "model": "quran.Surah"
     }
