@@ -1,5 +1,6 @@
 '''Models describing abstractions used at Quran app'''
 from django.db import models
+import django.contrib.postgres.fields
 from django.contrib.postgres.fields import ArrayField
 
 
@@ -16,5 +17,8 @@ class Ayah(models.Model):
     ayah_text = ArrayField(
         models.CharField(max_length=255, blank=True, default=''),
         default=list)
-    surah_id = models.ForeignKey(
-        'quran.Surah', on_delete=models.CASCADE, related_name='ayahs')
+    surah = models.ForeignKey(
+        'quran.Surah',
+        on_delete=models.CASCADE,
+        related_name='ayahs',
+        default=1)

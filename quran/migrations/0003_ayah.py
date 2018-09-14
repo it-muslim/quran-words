@@ -3,6 +3,7 @@
 import django.contrib.postgres.fields
 from django.db import migrations, models
 import django.db.models.deletion
+from django.contrib.postgres.fields import ArrayField
 
 
 class Migration(migrations.Migration):
@@ -25,7 +26,7 @@ class Migration(migrations.Migration):
                         max_length=255),
                     default=list,
                     size=None)),
-                ('surah_id', models.ForeignKey(
+                ('surah', models.ForeignKey(
                     on_delete=django.db.models.deletion.CASCADE,
                     related_name='ayahs',
                     to='quran.Surah')),
