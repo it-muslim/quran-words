@@ -30,16 +30,12 @@ class Migration(migrations.Migration):
                     primary_key=True,
                     serialize=False)),
                 ('text', django.contrib.postgres.fields.ArrayField(
-                    base_field=models.CharField(
-                        blank=True,
-                        default='',
-                        max_length=255),
-                    default=list,
-                    size=None)),
+                    base_field=models.TextField(default=''),
+                    default=list)),
                 ('surah', models.ForeignKey(
+                    'Surah',
                     on_delete=django.db.models.deletion.CASCADE,
-                    related_name='ayahs',
-                    to='quran.Surah')),
+                    related_name='ayahs')),
             ],
         ),
     ]

@@ -15,10 +15,9 @@ class Ayah(models.Model):
     '''General information about Ayah'''
     id = models.AutoField(primary_key=True)
     text = ArrayField(
-        models.CharField(max_length=255, blank=True, default=''),
+        models.TextField(default=''),
         default=list)
     surah = models.ForeignKey(
         Surah,
         on_delete=models.CASCADE,
-        related_name='ayahs',
-        default=1)
+        related_name='ayahs')

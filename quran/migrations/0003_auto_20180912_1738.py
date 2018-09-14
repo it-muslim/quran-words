@@ -25,7 +25,7 @@ def unload_ayahs(apps, schema_editor):
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('quran', '0003_ayah'),
+        ('quran', '0002_auto_20180908_0913'),
     ]
 
     operations = [
