@@ -1,38 +1,32 @@
-'''convert quran_words_ar.csv to django fixtures file'''
+'''Convert quran_words_ar.csv to django fixtures file'''
 import json
 from os import path
 import csv
-from pprint import pprint
 from collections import defaultdict
 
 
 def structure_surah_dict(data):
-    '''parse raw csv data and build structured dict'''
-    surah_dict = {}
-    for surah, ayah, position, word in data[1:]:
-
-        if surah not in surah_dict:
-            surah_dict[surah] = {}
-
+    '''Parse raw csv data and build structured dict'''
+    surah_dict = defaultdict(lambda: defaultdict(list))
+    for surah, ayah, position, word in data:
         if ayah not in surah_dict[surah]:
             surah_dict[surah][ayah] = []
 
-        if word not in surah_dict[surah][ayah]:
+        if position > len(surah_dict[surah][ayah]):
             surah_dict[surah][ayah].append(word)
-
     return surah_dict
 
 
 def structure_ayah_json(surah_dict):
-    '''form import ready ayah list json from structured dict'''
+    '''Form import ready ayah list json from structured dict'''
     list_of_ayahs = []
     for surah, surah_values in surah_dict.items():
         for ayah, ayah_values in surah_values.items():
             element = {
                 "model": "quran.Ayah",
                 "fields": {
-                    "surah_id": surah,
-                    "id": ayah,
+                    "surah": surah,
+                    "ayah": ayah,
                     "text": ayah_values
                 }
             }
@@ -43,7 +37,7 @@ def structure_ayah_json(surah_dict):
 def main():
     fixture_dir = path.abspath(
         path.join(path.dirname(__file__), '../../quran/fixtures'))
-    fixture_filename = 'ayahs_list.json'
+    fixture_filename = 'ayah_list.json'
     fixture_file = path.join(fixture_dir, fixture_filename)
 
     data = list()
@@ -53,9 +47,9 @@ def main():
         reader = csv.DictReader(data_file, fieldnames)
         for row in reader:
             data.append([
-                row.get("surah"),
-                row.get("ayah"),
-                row.get("position"),
+                int(row.get("surah")),
+                int(row.get("ayah")),
+                int(row.get("position")),
                 row.get("text")])
 
     surah_dict = structure_surah_dict(data)
