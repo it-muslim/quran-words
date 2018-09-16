@@ -9,7 +9,7 @@ from os import path
 def main():
     fixture_dir = path.abspath(
         path.join(path.dirname(__file__), '../../quran/fixtures'))
-    fixture_filename = 'surah_data_init.json'
+    fixture_filename = 'surah_list.json'
     fixture_file = path.join(fixture_dir, fixture_filename)
 
     with open('surah.json', encoding='utf-8') as data_file:
