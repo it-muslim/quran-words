@@ -9,28 +9,24 @@ def structure_surah_dict(data):
     '''Parse raw csv data and build structured dict'''
     surah_dict = defaultdict(lambda: defaultdict(list))
     for surah, ayah, position, word in data:
-        if ayah not in surah_dict[surah]:
-            surah_dict[surah][ayah] = []
-
-        if position > len(surah_dict[surah][ayah]):
-            surah_dict[surah][ayah].append(word)
+        surah_dict[surah][ayah].append(word)
     return surah_dict
 
 
 def structure_ayah_json(surah_dict):
     '''Form import ready ayah list json from structured dict'''
     list_of_ayahs = []
-    for surah, surah_values in surah_dict.items():
-        for ayah, ayah_values in surah_values.items():
+    for surah, ayahs in surah_dict.items():
+        for ayah, words in ayahs.items():
             element = {
                 "model": "quran.Ayah",
                 "fields": {
                     "surah": surah,
                     "ayah": ayah,
-                    "text": ayah_values
+                    "text": words
                 }
             }
-            list_of_ayahs.append(element.copy())
+            list_of_ayahs.append(element)
     return list_of_ayahs
 
 
