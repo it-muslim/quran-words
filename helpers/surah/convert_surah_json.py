@@ -19,10 +19,10 @@ def main():
         {
             "model": "quran.Surah",
             "fields": {
-                "name": element['title'],
-                "total_ayahs": element['count']}
+                "name": surah['title'],
+                "total_ayahs": surah['count']}
         }
-        for element in data]
+        for surah in data]
 
     with open(fixture_file, 'w') as fp:
         json.dump(surah_data, fp, sort_keys=True, indent=4)

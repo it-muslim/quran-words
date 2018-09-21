@@ -36,11 +36,11 @@ def main():
     fixture_filename = 'ayah_list.json'
     fixture_file = path.join(fixture_dir, fixture_filename)
 
-    data = list()
+    data = []
 
     with open('quran-words-ar.csv', encoding='utf-8') as data_file:
-        fieldnames = ("surah", "ayah", "position", "text")
-        reader = csv.DictReader(data_file, fieldnames)
+        field_names = ("surah", "ayah", "position", "text")
+        reader = csv.DictReader(data_file, field_names)
         for row in reader:
             data.append([
                 int(row.get("surah")),
