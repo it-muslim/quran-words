@@ -19,6 +19,7 @@ def main():
         {
             "model": "quran.Surah",
             "fields": {
+                "number": int(surah['index']),
                 "name": surah['title'],
                 "total_ayahs": surah['count']}
         }

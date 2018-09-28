@@ -22,8 +22,8 @@ def structure_ayah_json(surah_dict):
                 "model": "quran.Ayah",
                 "fields": {
                     "surah": surah,
-                    "ayah": ayah,
-                    "text": words
+                    "number": ayah,
+                    "text": ",".join(words)
                 }
             }
             list_of_ayahs.append(element)
