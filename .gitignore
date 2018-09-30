@@ -7,3 +7,4 @@ staticfiles/
 mediafiles/
 postgres_database/*
 !postgres_database/.gitkeep
+.pylintrc

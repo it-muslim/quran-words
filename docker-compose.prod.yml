@@ -6,7 +6,7 @@ services:
     env_file:
       - ./.env
       - ./.env.secret
-    command: gunicorn --bind 0.0.0.0:8080 src.wsgi
+    command: gunicorn --bind 0.0.0.0:8080 config.wsgi
     volumes:
       - .:/www
     ports:

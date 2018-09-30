@@ -2,7 +2,7 @@ version: "3"
 services:
   web:
     build: .
-    container_name: dz01
+    container_name: web01
     env_file:
       - ./.env
       - ./.env.secret
@@ -14,6 +14,7 @@ services:
     depends_on:
       - db
   db:
+    container_name: db01
     image: "postgres:10.3-alpine"
     restart: always
     env_file:
@@ -22,6 +23,14 @@ services:
       - "5432:5432"
     volumes:
       - postgres_database:/var/lib/postgresql/data
+  adminer:
+    container_name: adminer
+    image: adminer
+    restart: always
+    ports:
+      - "8080:8080"
+    env_file:
+      - ./.env.secret
 volumes:
   postgres_database:
     external: true
