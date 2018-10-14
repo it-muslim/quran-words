@@ -1,20 +1,19 @@
 version: "3"
 services:
   web:
-    build: .
-    container_name: web01
+    build: ./backend/
+    restart: on-failure
     env_file:
       - ./.env
       - ./.env.secret
     command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
-      - .:/www
+      - ./backend/:/www
     ports:
       - "8000:8000"
     depends_on:
       - db
   db:
-    container_name: db01
     image: "postgres:10.3-alpine"
     restart: always
     env_file:
@@ -22,9 +21,8 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_database:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
   adminer:
-    container_name: adminer
     image: adminer
     restart: always
     ports:
@@ -32,5 +30,5 @@ services:
     env_file:
       - ./.env.secret
 volumes:
-  postgres_database:
+  postgres:
     external: true
