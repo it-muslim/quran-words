@@ -1,0 +1,11 @@
+[
+    {
+        "fields": {
+            "description": "",
+            "id": 1,
+            "name": "Al-Afasy",
+            "quality": "256 kb/s"
+        },
+        "model": "quran.Reciter"
+    }
+]
