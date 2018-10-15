@@ -1,34 +1,14 @@
 version: "3"
 services:
-  web:
+  backend:
     build: ./backend/
     restart: on-failure
-    env_file:
-      - ./.env
-      - ./.env.secret
+    environment:
+      - SECRET_KEY=secret123
+      - DEBUG=1
+      - ALLOWED_HOSTS=*
     command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
       - ./backend/:/www
     ports:
       - "8000:8000"
-    depends_on:
-      - db
-  db:
-    image: "postgres:10.3-alpine"
-    restart: always
-    env_file:
-      - ./.env.secret
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres:/var/lib/postgresql/data
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - "8080:8080"
-    env_file:
-      - ./.env.secret
-volumes:
-  postgres:
-    external: true

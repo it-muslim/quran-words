@@ -1,0 +1,12 @@
+sudo: required
+dist: trusty
+
+services:
+- docker
+
+install:
+- docker-compose pull
+- docker-compose build
+
+script:
+- docker-compose run -e DJANGO_SETTINGS_MODULE=config.testing --no-deps --rm backend py.test
