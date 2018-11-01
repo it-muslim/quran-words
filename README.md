@@ -19,9 +19,22 @@ QuranWords Project in development and production environments.
  su postgres
  psql
 
+### Run without docker
+- `python manage.py runserver --settings=config.settings.development.py`
+
+- to migrate database changes
+  `python manage.py  migrate --settings=config.settings.development.py`
+
+
 ## Production
 - Follow the first 2 steps outlined above
 - Run `docker-compose -f docker-compose.prod.yml up --build -d`
 - Run `docker-compose -f docker-compose.prod.yml run web python3 manage.py migrate`
 - Run `docker-compose -f docker-compose.prod.yml run web python3 manage.py collectstatic`
 - Visit website
+
+### Run without docker
+- `python manage.py runserver --settings=config.settings.production.py`
+
+- to migrate database changes
+  `python manage.py  migrate --settings=config.settings.production.py`
