@@ -1,35 +1,48 @@
 import os
-from os.path import abspath, dirname, join
 from dotenv import load_dotenv
 
 
-# handling file paths
-def root(*dirs):
-    base_dir = join(dirname(__file__), '..', '..')
-    return abspath(join(base_dir, *dirs))
+def reduce_path(file_name, times=3):
+    """Return directory path"""
+    result = os.path.realpath(file_name)
+    for _ in range(times):
+        result = os.path.dirname(result)
+    return result
 
 
-BASE_DIR = root()
+def rel_path(*x):
+    """Handling file paths"""
+    return os.path.abspath(os.path.join(BASE_DIR, *x))
+
+
+# Project directory
+BASE_DIR = reduce_path(__file__)
 
 # .env file
-dotenv_path = root('.env')
+dotenv_path = rel_path('.env')
 
 # load settings from .env file
 load_dotenv(dotenv_path)
 
 SECRET_KEY = os.getenv('SECRET_KEY')
 
-
-# Application definition
-INSTALLED_APPS = [
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+]
+
+THIRD_PARTY_APPS = []
+
+LOCAL_APPS = [
     'quran',
 ]
+
+# Application definition
+INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -46,7 +59,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [rel_path('templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -58,9 +71,6 @@ TEMPLATES = [
         },
     },
 ]
-
-WSGI_APPLICATION = 'config.wsgi.application'
-
 
 # Database
 DATABASES = {
@@ -107,11 +117,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
-STATIC_ROOT = root('staticfiles_root')
+STATIC_ROOT = rel_path('static_root')
 
-STATICFILES_DIRS = [root('staticfiles')]
+STATICFILES_DIRS = [rel_path('static')]
 
 # Media files
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = root('mediafiles')
+MEDIA_ROOT = rel_path('media')

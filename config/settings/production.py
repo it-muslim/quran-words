@@ -1,6 +1,8 @@
 import os
+from .base import *
 
 DEBUG = False
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',') \
-    if os.getenv('ALLOWED_HOSTS') else None
+ALLOWED_HOSTS = os.environ['ALLOWED_HOSTS'].split(',')
+
+WSGI_APPLICATION = 'config.wsgi.application'
