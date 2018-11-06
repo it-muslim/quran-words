@@ -2,29 +2,24 @@ import os
 from dotenv import load_dotenv
 
 
-def reduce_path(file_name, times=3):
-    """Return directory path"""
+def reduce_path(file_name, times):
+    """Return the path of `times` parent directory."""
     result = os.path.realpath(file_name)
     for _ in range(times):
         result = os.path.dirname(result)
     return result
 
 
-def rel_path(*x):
-    """Handling file paths"""
-    return os.path.abspath(os.path.join(BASE_DIR, *x))
-
-
 # Project directory
-BASE_DIR = reduce_path(__file__)
+BASE_DIR = reduce_path(__file__, times=3)
 
 # .env file
-dotenv_path = rel_path('.env')
+dotenv_path = os.path.join(BASE_DIR, '.env')
 
 # load settings from .env file
 load_dotenv(dotenv_path)
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 DJANGO_APPS = [
     'django.contrib.admin',
@@ -59,7 +54,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [rel_path('templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -71,19 +66,6 @@ TEMPLATES = [
         },
     },
 ]
-
-# Database
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'HOST': os.getenv('POSTGRES_HOST'),
-        'PORT': os.getenv('POSTGRES_PORT'),
-        'USER': os.getenv('POSTGRES_USER'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD'),
-        'NAME': os.getenv('POSTGRES_DB'),
-    }
-}
-
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -117,11 +99,11 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 STATIC_URL = '/static/'
 
-STATIC_ROOT = rel_path('static_root')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static_root')
 
-STATICFILES_DIRS = [rel_path('static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 
 # Media files
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = rel_path('media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

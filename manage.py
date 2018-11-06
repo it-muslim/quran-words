@@ -3,7 +3,8 @@ import os
 import sys
 from dotenv import load_dotenv
 
-load_dotenv("%s/.env" % os.path.dirname(os.path.abspath(__file__)))
+
+load_dotenv(os.path.join(os.path.dirname(os.path.abspath(__file__)), '.env'))
 
 if __name__ == '__main__':
     DJANGO_EXECUTION_ENVIRONMENT = os.getenv(
