@@ -8,4 +8,3 @@ mediafiles/
 postgres_database/*
 !postgres_database/.gitkeep
 .pylintrc
-config/settings/development_mannpy.py
