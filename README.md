@@ -7,7 +7,7 @@ QuranWords Project in development and production environments.
 
 ## Development
 - Clone project
-- Create *.env* from the example files in the root folder and edit as appropriate
+- Create *.env* from the example files in the root folder and edit it appropriately
 - Run `docker-compose up`
 - Visit localhost:8000 // or Windows -> http://192.168.99.100:8000/
 
