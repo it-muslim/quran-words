@@ -9,9 +9,7 @@ fixture_ayahs = 'ayah_list.json'
 
 
 class LoadData:
-
-    """ Load fixture files """
-
+    """Class for loading data into DataBase from fixture files"""
     def __init__(self, fixture_data):
         self.fixture_dir = path.abspath(
             path.join(path.dirname(__file__), '../fixtures/'))
@@ -23,9 +21,7 @@ class LoadData:
 
 
 class UnloadData:
-
-    """ Deleting all entries for this model """
-
+    """Class for deleting all entries from a given (app, model) pair."""
     def __init__(self, app, model):
         self.app = app
         self.model = model
