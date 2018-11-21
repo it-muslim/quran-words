@@ -1,6 +1,8 @@
 '''Models describing abstractions used at Quran app'''
-from os import path
+import os
+import json
 from django.db import models
+from django.core.validators import RegexValidator
 from django.template.defaultfilters import slugify
 
 
@@ -15,7 +17,7 @@ class Surah(models.Model):
 
 
 class Ayah(models.Model):
-    '''Model representing a ayah from the Qur’an.'''
+    '''Model representing an ayah from the Qur’an.'''
     number = models.PositiveIntegerField()
     text = models.TextField()
     surah = models.ForeignKey(
@@ -31,36 +33,57 @@ class Ayah(models.Model):
 class Reciter(models.Model):
     '''Model representing a reciter'''
     name = models.CharField(max_length=100)
-    quality = models.CharField(max_length=20, blank=True)
-    style = models.CharField(max_length=100, blank=True)
-    slug = models.SlugField()
+    quality = models.CharField(
+        max_length=10, blank=True,
+        help_text='This field contain a bitrate of audio file')
+    style = models.CharField(
+        max_length=20, blank=True,
+        help_text='This filed describe style \
+        or speed of reading of the reciter')
+    slug = models.SlugField(
+        help_text="This field is short label for name, \
+        containing only letters and hyphens. \
+        It's filled automatically during saving.")
+
+    def clean(self, *args, **kwargs):
+        # replacing slashes and empty symbols to avoid creating subfolders
+        # while audio file upload to media
+        self.quality = self.quality.replace('/', 'p').replace(' ', '')
+        # validating bitrate quality matching to string like '192kbps'
+        bitrate_validator = RegexValidator(
+            regex=r'^[\d]{1,3}\w{2}[p|\/]\w$',
+            message='The bitrate is wrong',
+            code='invalid_bitrate')
+        bitrate_validator(self.quality)
+        super(Reciter, self).clean(*args, **kwargs)
 
     def save(self, *args, **kwargs):
-        self.quality = self.quality.replace('/', 'p').replace(' ', '')
+        # creating slug from name
         self.slug = slugify(self.name)
+        # running redefined full_clean to validate bitrate quality
+        self.full_clean()
         super(Reciter, self).save(*args, **kwargs)
 
     def __str__(self):
-        return self.name
+        return "%s: %s(%s)" % (self.name, self.style, self.quality)
 
 
-def audio_directory_path(instance, filename):
+def audio_directory_path(recitation, filename):
     '''
-    the function generates path for
-    uploading audio file of ayahs to
-    MEDIA_ROOT/<reciter-slug>/<style>/<quality>/<surah-id>/<ayah-id>.mp3
+    Return a path where audio file for a given recitation will be uploaded
+    MEDIA_ROOT/<reciter-slug>/<style>/<quality>/<surah-pk>/<ayah-pk>.mp3
     '''
-    ayah = Ayah.objects.get(pk=instance.ayah_id)
+    ayah = recitation.ayah
     surah_number = ayah.surah.number
-    file_extension = path.splitext(path.basename(filename))[1]
-    style_dir = path.join(
-        '/', instance.reciter.style
-    ) if instance.reciter.style else ''
-    quality_dir = path.join(
-        '/', instance.reciter.quality
-    ) if instance.reciter.quality else ''
+    file_extension = os.path.splitext(os.path.basename(filename))[1]
+    style_dir = os.path.join(
+        '/', recitation.reciter.style
+    ) if recitation.reciter.style else ''
+    quality_dir = os.path.join(
+        '/', recitation.reciter.quality
+    ) if recitation.reciter.quality else ''
     return '{slug}{style}{quality}/{surah}/{ayah}.{extension}'.format(
-        slug=instance.reciter.slug,
+        slug=recitation.reciter.slug,
         style=style_dir,
         quality=quality_dir,
         surah=surah_number,
@@ -76,13 +99,31 @@ class Recitation(models.Model):
     an information about times when each word in this audio file
     was pronounced.
     '''
-    ayah_id = models.PositiveIntegerField()
-    segments = models.TextField()
-    audio = models.FileField(upload_to=audio_directory_path)
+    ayah = models.ForeignKey(
+        Ayah,
+        on_delete=models.CASCADE,
+        related_name='recitations'
+    )
     reciter = models.ForeignKey(
         Reciter,
         on_delete=models.CASCADE,
         related_name='recitations')
+    segments = models.TextField()
+    audio = models.FileField(upload_to=audio_directory_path)
+
+    def set_segments(self, segments_list):
+        '''set ayah's segments list to field of segments as a string.'''
+        self.segments = json.dumps(segments_list, separators=(',', ':'))
+
+    @property
+    def get_segments(self):
+        '''return list of segments'''
+        try:
+            segments_list = json.loads(self.segments)
+        except json.decoder.JSONDecodeError:
+            print("Can't decode segments string")
+        else:
+            return segments_list
 
     def __str__(self):
         return "%s:(%s)" % (self.reciter, self.ayah_id)
