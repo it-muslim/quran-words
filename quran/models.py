@@ -1,8 +1,6 @@
 '''Models describing abstractions used at Quran app'''
 import os
-import json
 from django.db import models
-from django.core.validators import RegexValidator
 from django.template.defaultfilters import slugify
 
 
@@ -13,7 +11,7 @@ class Surah(models.Model):
     total_ayahs = models.PositiveIntegerField()
 
     def __str__(self):
-        return "%s:(%s)" % (self.name, self.number)
+        return f'{self.name}: ({self.number})'
 
 
 class Ayah(models.Model):
@@ -26,15 +24,14 @@ class Ayah(models.Model):
         related_name='ayahs')
 
     def __str__(self):
-        return "%s: (%s:%s)" % (
-            self.surah.name, self.surah.number, self.number)
+        return f'{self.surah.name}: ({self.surah.number}:{self.number})'
 
 
 class Reciter(models.Model):
     '''Model representing a reciter'''
     name = models.CharField(max_length=100)
-    quality = models.CharField(
-        max_length=10, blank=True,
+    bitrate = models.PositiveIntegerField(
+        blank=True,
         help_text='This field contain a bitrate of audio file')
     style = models.CharField(
         max_length=20, blank=True,
@@ -45,50 +42,28 @@ class Reciter(models.Model):
         containing only letters and hyphens. \
         It's filled automatically during saving.")
 
-    def clean(self, *args, **kwargs):
-        # replacing slashes and empty symbols to avoid creating subfolders
-        # while audio file upload to media
-        self.quality = self.quality.replace('/', 'p').replace(' ', '')
-        # validating bitrate quality matching to string like '192kbps'
-        bitrate_validator = RegexValidator(
-            regex=r'^[\d]{1,3}\w{2}[p|\/]\w$',
-            message='The bitrate is wrong',
-            code='invalid_bitrate')
-        bitrate_validator(self.quality)
-        super(Reciter, self).clean(*args, **kwargs)
-
     def save(self, *args, **kwargs):
         # creating slug from name
         self.slug = slugify(self.name)
-        # running redefined full_clean to validate bitrate quality
-        self.full_clean()
         super(Reciter, self).save(*args, **kwargs)
 
     def __str__(self):
-        return "%s: %s(%s)" % (self.name, self.style, self.quality)
+        return f'{self.name}: {self.style}({self.bitrate}kb/s)'
 
 
 def audio_directory_path(recitation, filename):
     '''
     Return a path where audio file for a given recitation will be uploaded
-    MEDIA_ROOT/<reciter-slug>/<style>/<quality>/<surah-pk>/<ayah-pk>.mp3
+    MEDIA_ROOT/<reciter-slug>/<style>/<bitrate>/<surah-pk>/<ayah-pk>.mp3
     '''
     ayah = recitation.ayah
-    surah_number = ayah.surah.number
     file_extension = os.path.splitext(os.path.basename(filename))[1]
-    style_dir = os.path.join(
-        '/', recitation.reciter.style
-    ) if recitation.reciter.style else ''
-    quality_dir = os.path.join(
-        '/', recitation.reciter.quality
-    ) if recitation.reciter.quality else ''
-    return '{slug}{style}{quality}/{surah}/{ayah}.{extension}'.format(
-        slug=recitation.reciter.slug,
-        style=style_dir,
-        quality=quality_dir,
-        surah=surah_number,
-        ayah=ayah.number,
-        extension=file_extension
+    return os.path.join(
+        recitation.reciter.slug,
+        recitation.reciter.style,
+        f'{recitation.reciter.bitrate}kbps',
+        f'{ayah.surah.number}',
+        f'{ayah.number}{file_extension}'
     )
 
 
@@ -111,19 +86,22 @@ class Recitation(models.Model):
     segments = models.TextField()
     audio = models.FileField(upload_to=audio_directory_path)
 
+    def __str__(self):
+        return f'{self.reciter}: ({self.ayah})'
+
     def set_segments(self, segments_list):
-        '''set ayah's segments list to field of segments as a string.'''
-        self.segments = json.dumps(segments_list, separators=(',', ':'))
+        '''
+        set ayah's segments list containing tuples
+        of timecodes pair of beginning and ending
+        of the word to field of segments as a string.
+        '''
+        self.segments = ','.join(
+            (f'{segment_pair[0]}:{segment_pair[1]}'
+                for segment_pair in segments_list))
 
     @property
     def get_segments(self):
-        '''return list of segments'''
-        try:
-            segments_list = json.loads(self.segments)
-        except json.decoder.JSONDecodeError:
-            print("Can't decode segments string")
-        else:
-            return segments_list
-
-    def __str__(self):
-        return "%s:(%s)" % (self.reciter, self.ayah_id)
+        '''return list of segments containing tuple of timecodes'''
+        return [
+            tuple(int(timecode) for timecode in timecodes.split(':'))
+            for timecodes in self.segments.split(',')]
