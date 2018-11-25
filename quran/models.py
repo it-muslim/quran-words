@@ -2,6 +2,7 @@
 import os
 from django.db import models
 from django.template.defaultfilters import slugify
+from .fields import SegmentsField
 
 
 class Surah(models.Model):
@@ -32,13 +33,13 @@ class Reciter(models.Model):
     name = models.CharField(max_length=100)
     bitrate = models.PositiveIntegerField(
         blank=True,
-        help_text='This field contain a bitrate of audio file')
+        null=True,
+        help_text="Bitrate of an audio file")
     style = models.CharField(
         max_length=20, blank=True,
-        help_text='This filed describe style \
-        or speed of reading of the reciter')
+        help_text="Qur'an reading style")
     slug = models.SlugField(
-        help_text="This field is short label for name, \
+        help_text="Short label for name, \
         containing only letters and hyphens. \
         It's filled automatically during saving.")
 
@@ -48,20 +49,26 @@ class Reciter(models.Model):
         super(Reciter, self).save(*args, **kwargs)
 
     def __str__(self):
-        return f'{self.name}: {self.style}({self.bitrate}kb/s)'
+        bitrate = f'{self.bitrate}kb/s' if self.bitrate else ''
+        return '-'.join(
+            filter(None, (self.name, self.style, bitrate))
+        )
 
 
 def audio_directory_path(recitation, filename):
     '''
     Return a path where audio file for a given recitation will be uploaded
-    MEDIA_ROOT/<reciter-slug>/<style>/<bitrate>/<surah-pk>/<ayah-pk>.mp3
+    MEDIA_ROOT/<reciter-slug>/<style>/<bitrate>/<surah-number>/<ayah-number>.mp3
     '''
     ayah = recitation.ayah
     file_extension = os.path.splitext(os.path.basename(filename))[1]
+    bitrate = (
+        f'{recitation.reciter.bitrate}kbps' if recitation.reciter.bitrate
+        else '')
     return os.path.join(
         recitation.reciter.slug,
         recitation.reciter.style,
-        f'{recitation.reciter.bitrate}kbps',
+        bitrate,
         f'{ayah.surah.number}',
         f'{ayah.number}{file_extension}'
     )
@@ -83,25 +90,8 @@ class Recitation(models.Model):
         Reciter,
         on_delete=models.CASCADE,
         related_name='recitations')
-    segments = models.TextField()
+    segments = SegmentsField()
     audio = models.FileField(upload_to=audio_directory_path)
 
     def __str__(self):
         return f'{self.reciter}: ({self.ayah})'
-
-    def set_segments(self, segments_list):
-        '''
-        set ayah's segments list containing tuples
-        of timecodes pair of beginning and ending
-        of the word to field of segments as a string.
-        '''
-        self.segments = ','.join(
-            (f'{segment_pair[0]}:{segment_pair[1]}'
-                for segment_pair in segments_list))
-
-    @property
-    def get_segments(self):
-        '''return list of segments containing tuple of timecodes'''
-        return [
-            tuple(int(timecode) for timecode in timecodes.split(':'))
-            for timecodes in self.segments.split(',')]
