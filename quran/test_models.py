@@ -1,6 +1,5 @@
 import shutil
 import tempfile
-from django.core import exceptions
 from django.conf import settings
 from django.test import TestCase
 from django.core.files import File
@@ -16,18 +15,22 @@ class ReciterTestCase(TestCase):
             name="Mishari Rashid al-ʿAfasi")
 
     def test_reciter_string_representation(self):
-        self.assertEqual(str(self.mishari), 'Mishari Rashid al-ʿAfasi')
+        self.assertEqual(
+            str(self.mishari),
+            'Mishari Rashid al-ʿAfasi (style=None, bitrate=None)')
 
     def test_reciter_string_representation_with_style(self):
         self.mishari.style = 'murattal'
         self.assertEqual(
-            str(self.mishari), 'Mishari Rashid al-ʿAfasi-murattal')
+            str(self.mishari),
+            'Mishari Rashid al-ʿAfasi (style=murattal, bitrate=None)')
 
     def test_reciter_string_representation_with_style_and_bitrate(self):
         self.mishari.style = 'murattal'
         self.mishari.bitrate = 128
         self.assertEqual(
-            str(self.mishari), 'Mishari Rashid al-ʿAfasi-murattal-128kb/s')
+            str(self.mishari),
+            'Mishari Rashid al-ʿAfasi (style=murattal, bitrate=128)')
 
     def test_reciter_slug(self):
         self.assertEqual(self.mishari.slug, 'mishari-rashid-al-afasi')
@@ -41,7 +44,7 @@ class RecitationTestCase(TestCase):
         self.test_dir = tempfile.mkdtemp()
         self._original_media_root = settings.MEDIA_ROOT
         settings.MEDIA_ROOT = self.test_dir
-        # get the senond ayah from the surah Al-Baqara
+        # get the second ayah from the surah Al-Baqara
         self.ayah = Ayah.objects.get(pk=8)
         # create a temporary audio
         file = tempfile.NamedTemporaryFile(suffix='.mp3')
@@ -87,19 +90,3 @@ class RecitationTestCase(TestCase):
         self.assertEqual(
             recitation.audio,
             'mishari-rashid-al-afasi/mujawwad/128kbps/2/1.mp3')
-
-    def test_recitation_segments(self):
-        recitation = Recitation.objects.create(
-            ayah=self.ayah, segments=[(12, 15), (15, 19), (20, 26)],
-            reciter=self.mishari, audio=self.audio_ayah)
-        self.assertEqual(
-            recitation.segments, [(12, 15), (15, 19), (20, 26)])
-
-    def test_recitation_with_wrong_segments(self):
-        try:
-            Recitation.objects.create(
-                ayah=self.ayah, segments=[(12, 15), (15, 90, 100)],
-                reciter=self.mishari, audio=self.audio_ayah)
-        except exceptions.ValidationError as e:
-            self.assertEqual(
-                str(e), "['Length of tuple must be equals 2']")

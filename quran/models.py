@@ -49,10 +49,8 @@ class Reciter(models.Model):
         super(Reciter, self).save(*args, **kwargs)
 
     def __str__(self):
-        bitrate = f'{self.bitrate}kb/s' if self.bitrate else ''
-        return '-'.join(
-            filter(None, (self.name, self.style, bitrate))
-        )
+        return f'{self.name} ' + \
+            f'(style={self.style or None}, bitrate={self.bitrate})'
 
 
 def audio_directory_path(recitation, filename):
