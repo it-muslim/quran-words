@@ -9,74 +9,122 @@ class Migration(migrations.Migration):
 
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Ayah',
+            name="Ayah",
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True, primary_key=True,
-                    serialize=False, verbose_name='ID')),
-                ('number', models.PositiveIntegerField()),
-                ('text', models.TextField()),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("number", models.PositiveIntegerField()),
+                ("text", models.TextField()),
             ],
         ),
         migrations.CreateModel(
-            name='Recitation',
+            name="Recitation",
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True, primary_key=True,
-                    serialize=False, verbose_name='ID')),
-                ('segments', quran.fields.SegmentsField()),
-                ('audio', models.FileField(
-                    upload_to=quran.models.audio_directory_path)),
-                ('ayah', models.ForeignKey(
-                    on_delete=models.deletion.CASCADE,
-                    related_name='recitations', to='quran.Ayah')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("segments", quran.fields.SegmentsField()),
+                (
+                    "audio",
+                    models.FileField(
+                        upload_to=quran.models.audio_directory_path
+                    ),
+                ),
+                (
+                    "ayah",
+                    models.ForeignKey(
+                        on_delete=models.deletion.CASCADE,
+                        related_name="recitations",
+                        to="quran.Ayah",
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Reciter',
+            name="Reciter",
             fields=[
-                ('id', models.AutoField(
-                    auto_created=True, primary_key=True,
-                    serialize=False, verbose_name='ID')),
-                ('name', models.CharField(max_length=100)),
-                ('bitrate', models.PositiveIntegerField(
-                    blank=True,
-                    help_text='Bitrate of an audio file', null=True)),
-                ('style', models.CharField(
-                    blank=True,
-                    help_text="Qur'an reading style", max_length=20)),
-                ('slug', models.SlugField(
-                    help_text="Short label for name, \
-                    containing only letters and hyphens. \
-                    It's filled automatically during saving.")),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("name", models.CharField(max_length=100)),
+                (
+                    "bitrate",
+                    models.PositiveIntegerField(
+                        blank=True,
+                        help_text="Bitrate of an audio file",
+                        null=True,
+                    ),
+                ),
+                (
+                    "style",
+                    models.CharField(
+                        blank=True,
+                        help_text="Qur'an reading style",
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "slug",
+                    models.SlugField(
+                        help_text="Short label for name, "
+                        "containing only letters and hyphens. "
+                        "It's filled automatically during saving."
+                    ),
+                ),
             ],
         ),
         migrations.CreateModel(
-            name='Surah',
+            name="Surah",
             fields=[
-                ('number', models.PositiveIntegerField(
-                    primary_key=True, serialize=False)),
-                ('name', models.CharField(max_length=20)),
-                ('total_ayahs', models.PositiveIntegerField()),
+                (
+                    "number",
+                    models.PositiveIntegerField(
+                        primary_key=True, serialize=False
+                    ),
+                ),
+                ("name", models.CharField(max_length=20)),
+                ("total_ayahs", models.PositiveIntegerField()),
             ],
         ),
         migrations.AddField(
-            model_name='recitation',
-            name='reciter',
+            model_name="recitation",
+            name="reciter",
             field=models.ForeignKey(
                 on_delete=models.deletion.CASCADE,
-                related_name='recitations', to='quran.Reciter'),
+                related_name="recitations",
+                to="quran.Reciter",
+            ),
         ),
         migrations.AddField(
-            model_name='ayah',
-            name='surah',
+            model_name="ayah",
+            name="surah",
             field=models.ForeignKey(
                 on_delete=models.deletion.CASCADE,
-                related_name='ayahs', to='quran.Surah'),
+                related_name="ayahs",
+                to="quran.Surah",
+            ),
         ),
     ]
