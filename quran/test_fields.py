@@ -45,11 +45,13 @@ class SegmentsFieldTestCase(TestCase):
         self.assertEqual(self.field.get_prep_value([]), "")
         self.assertEqual(self.field.get_prep_value(""), "")
         # wrong segments: not a list
-        expected_message = "['Segments must be a list']"
+        expected_message = (
+            "['Unable to decode anything other than list and string']"
+        )
         with self.assertRaisesMessage(ValidationError, expected_message):
             self.field.get_prep_value({3, 4, (5, 7)})
         # wrong segments: list without tuples
-        expected_message = "['List must contains tuples only']"
+        expected_message = "['List must contain tuples only']"
         with self.assertRaisesMessage(ValidationError, expected_message):
             self.field.get_prep_value([3, 4, [5, 7]])
         # wrong segments: length of tuples less than two
@@ -63,17 +65,19 @@ class SegmentsFieldTestCase(TestCase):
     def test_segmentsfield_to_python(self):
         self.assertIsNone(self.field.to_python(None))
         self.assertEqual(self.field.to_python(""), [])
-        self.assertIsInstance(self.field.to_python("3:4,5:7"), list)
         self.assertEqual(self.field.to_python("3:4,5:7"), [(3, 4), (5, 7)])
         self.assertEqual(
             self.field.to_python([(3, 4), (5, 7)]), [(3, 4), (5, 7)]
         )
         # wrong segments
-        expected_message = "['Invalid string of segments']"
+        expected_message = "['Length of tuples must be equals 2']"
         with self.assertRaisesMessage(ValidationError, expected_message):
             self.field.to_python("3,5:7")
         with self.assertRaisesMessage(ValidationError, expected_message):
             self.field.to_python("3:20:30:50,5:7")
+        expected_message = "['Invalid string of segments']"
+        with self.assertRaisesMessage(ValidationError, expected_message):
+            self.field.to_python("a:b,c:d")
 
 
 class SegmentsFieldDeconstructionTests(SimpleTestCase):

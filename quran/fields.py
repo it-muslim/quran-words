@@ -11,26 +11,26 @@ class SegmentsField(models.TextField):
         if not value:
             return []
         if not isinstance(value, list) and not isinstance(value, str):
-            self._raise_validation_error("Segments must be a list")
-        if isinstance(value, list):
-            # validate list
-            self._validate_tuples(value)
-            self._validate_lengths(value)
-            return value
-        try:
-            # try to convert a string of segments to a list of tuples
-            # "12:15,16:19" => [(12, 15), (16, 19)]
-            segment_list = [
-                tuple(int(segment) for segment in segments.split(":"))
-                for segments in value.split(",")
-            ]
-            # validate the obtained list of tuples
-            if not all((len(segment) == 2 for segment in segment_list)):
-                self._raise_validation_error("Invalid string of segments")
-            return segment_list
+            raise ValidationError(
+                message="Unable to decode anything other than list and string",
+                code="invalid",
+            )
+        if isinstance(value, str):
+            try:
+                # try to convert a string of segments to a list of tuples
+                # "12:15,16:19" => [(12, 15), (16, 19)]
+                value = [
+                    tuple(int(segment) for segment in segments.split(":"))
+                    for segments in value.split(",")
+                ]
 
-        except (TypeError, ValueError, IndexError):
-            self._raise_validation_error("Invalid string of segments")
+            except (TypeError, ValueError, IndexError):
+                raise ValidationError(
+                    message="Invalid string of segments", code="invalid"
+                )
+        self._validate_tuples(value)
+        self._validate_lengths(value)
+        return value
 
     def from_db_value(self, value, expression, connection):
         return self.to_python(value)
@@ -51,13 +51,14 @@ class SegmentsField(models.TextField):
         """Check if only tuples contain in the list"""
         all_tuples = all(isinstance(segment, tuple) for segment in value)
         if not all_tuples:
-            self._raise_validation_error("List must contains tuples only")
+            raise ValidationError(
+                message="List must contain tuples only", code="invalid"
+            )
 
     def _validate_lengths(self, value):
         """Check if all tuple lengths equal two."""
         all_equal_two = all((len(segment) == 2 for segment in value))
         if not all_equal_two:
-            self._raise_validation_error("Length of tuples must be equals 2")
-
-    def _raise_validation_error(self, message):
-        raise ValidationError(message=message, code="invalid")
+            raise ValidationError(
+                message="Length of tuples must be equals 2", code="invalid"
+            )
