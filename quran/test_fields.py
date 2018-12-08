@@ -42,6 +42,7 @@ class SegmentsFieldTestCase(TestCase):
         )
         self.assertIsNone(self.field.get_prep_value(None))
         self.assertEqual(self.field.get_prep_value([(3, 4)]), "3:4")
+        self.assertEqual(self.field.get_prep_value("3:9,10:12"), "3:9,10:12")
         self.assertEqual(self.field.get_prep_value([]), "")
         self.assertEqual(self.field.get_prep_value(""), "")
         # wrong segments: not a list
