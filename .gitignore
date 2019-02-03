@@ -8,3 +8,4 @@ media/
 postgres/*
 !postgres/.gitkeep
 .pylintrc
+venv/
