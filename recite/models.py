@@ -35,27 +35,6 @@ class Reciter(models.Model):
         )
 
 
-def audio_directory_path(recitation, filename):
-    """
-    Return a path where audio file for a given recitation will be uploaded
-    MEDIA_ROOT/<reciter-slug>/<style>/<bitrate>/<surah-number>/<ayah-number>.mp3
-    """
-    ayah = recitation.ayah
-    file_extension = os.path.splitext(os.path.basename(filename))[1]
-    bitrate = (
-        f"{recitation.reciter.bitrate}kbps"
-        if recitation.reciter.bitrate
-        else ""
-    )
-    return os.path.join(
-        recitation.reciter.slug,
-        recitation.reciter.style,
-        bitrate,
-        f"{ayah.surah.number}",
-        f"{ayah.number}{file_extension}",
-    )
-
-
 class Recitation(models.Model):
     """
     This model represents a recitation of an ayah from the Qur'an.
@@ -71,7 +50,6 @@ class Recitation(models.Model):
         Reciter, on_delete=models.CASCADE, related_name="recitations"
     )
     segments = SegmentsField()
-    audio = models.FileField(upload_to=audio_directory_path)
 
     def __str__(self):
         return f"{self.reciter}: ({self.ayah})"
