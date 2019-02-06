@@ -1,11 +1,8 @@
 from django.contrib import admin
 
 from .forms import ReciteForm
-from .models import Reciter
+from .models import Reciter, Recitation
 
 
-class ReciterAdmin(admin.ModelAdmin):
-    form = ReciteForm
-
-
-admin.site.register(Reciter, ReciterAdmin)
+admin.site.register(Reciter)
+admin.site.register(Recitation)
