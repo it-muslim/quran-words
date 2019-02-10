@@ -1,9 +1,9 @@
 """Models describing abstractions used for Recite app"""
+import os
+
 from django.db import models
-from django.template.defaultfilters import slugify
 
 from .fields import SegmentsField
-import os
 
 
 class Reciter(models.Model):
@@ -17,15 +17,10 @@ class Reciter(models.Model):
         max_length=20, blank=True, help_text="Qur'an reading style"
     )
     slug = models.SlugField(
-        help_text="Short label for name, "
+        unique=True,
+        help_text="Short unique label for name, "
         "containing only letters and hyphens. "
-        "It's filled automatically during saving."
     )
-
-    def save(self, *args, **kwargs):
-        # creating slug from name
-        self.slug = slugify(self.name)
-        super(Reciter, self).save(*args, **kwargs)
 
     def __str__(self):
         return (
@@ -54,8 +49,9 @@ class Recitation(models.Model):
         file_extension = os.path.splitext(os.path.basename(filename))[1]
         return os.path.join(
             "recite",
-            f"{self.reciter_id}",
-            f"{str(self.ayah)}"
+            self.reciter.slug,
+            f"{self.ayah.surah.number:03d}",
+            f"{self.ayah.number:03d}"
             f"{file_extension}",
         )
 
