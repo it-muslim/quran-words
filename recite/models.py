@@ -3,6 +3,7 @@ from django.db import models
 from django.template.defaultfilters import slugify
 
 from .fields import SegmentsField
+import os
 
 
 class Reciter(models.Model):
@@ -48,6 +49,18 @@ class Recitation(models.Model):
         Reciter, on_delete=models.CASCADE, related_name="recitations"
     )
     segments = SegmentsField()
+
+    def get_audio_directory(self, filename):
+        file_extension = os.path.splitext(os.path.basename(filename))[1]
+        return os.path.join(
+            "recite",
+            f"{self.reciter_id}",
+            f"{str(self.ayah)}"
+            f"{file_extension}",
+        )
+
+    audio = models.FileField(
+        upload_to=get_audio_directory)
 
     def __str__(self):
         return f"{self.reciter}: ({self.ayah})"
