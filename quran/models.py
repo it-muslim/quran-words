@@ -23,4 +23,4 @@ class Ayah(models.Model):
     )
 
     def __str__(self):
-        return f"{self.surah.name}: ({self.surah.number}:{self.number})"
+        return f"{self.surah.number:03d}{self.number:03d}"
