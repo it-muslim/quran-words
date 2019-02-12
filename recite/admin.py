@@ -57,7 +57,7 @@ class ReciterAdmin(admin.ModelAdmin):
 
         # process csv file uploaded
         segments_file = form.cleaned_data['segments_file'].file
-        csv_content = self.handle_csv_data(
+        csv_content = self.read_segments_csv(
             segments_file, encoding=request.encoding)
 
         # process audio zip file uploaded
@@ -124,7 +124,7 @@ class ReciterAdmin(admin.ModelAdmin):
 
         return file_ayah
 
-    def handle_csv_data(self, segments_file, encoding):
+    def read_segments_csv(self, segments_file, encoding):
         """Return csv file as ordered dict"""
         segments_file = io.TextIOWrapper(segments_file, encoding=encoding)
         segments_file.seek(0)
@@ -134,6 +134,7 @@ class ReciterAdmin(admin.ModelAdmin):
         return reader
 
     def get_unzipped_files_dir(self, audio_zip_file):
+        """Return temporary directory of unzipped files"""
         audio_files = ZipFile(audio_zip_file, 'r')
 
         temp_dir = tempfile.mkdtemp()
