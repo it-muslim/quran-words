@@ -1,9 +1,12 @@
 """Models describing abstractions used for Recite app"""
 import os
+import shutil
 
 from django.db import models
 
 from .fields import SegmentsField
+from django.dispatch import receiver
+from django.conf import settings
 
 
 class Reciter(models.Model):
@@ -60,3 +63,34 @@ class Recitation(models.Model):
 
     def __str__(self):
         return f"{self.reciter}: ({self.ayah})"
+
+
+@receiver(models.signals.post_delete, sender=Reciter)
+def auto_delete_files_on_delete(sender, instance, **kwargs):
+    """
+    Deletes Recitation files from filesystem
+    when corresponding `Reciter` object is  deleted.
+    """
+    reciter_path = os.path.join(
+        settings.MEDIA_ROOT, 'recite', str(instance.slug))
+    if os.path.exists(reciter_path):
+        shutil.rmtree(reciter_path)
+
+
+@receiver(models.signals.pre_save, sender=Reciter)
+def auto_delete_files_on_change(sender, instance, **kwargs):
+    """
+    Deletes Recitation files from filesystem
+    when corresponding `Reciter` object is changed.
+    """
+    try:
+        old_instance = Reciter.objects.get(id=instance.id)
+    except Reciter.DoesNotExist:
+        return
+    if old_instance.slug\
+            and instance.slug\
+            and old_instance.slug != instance.slug:
+        reciter_path = os.path.join(
+            settings.MEDIA_ROOT, 'recite', str(old_instance.slug))
+        if os.path.exists(reciter_path):
+            shutil.rmtree(reciter_path)
