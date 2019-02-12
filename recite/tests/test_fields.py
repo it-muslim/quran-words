@@ -1,7 +1,7 @@
 from django.db import connection
 from django.core.exceptions import ValidationError
 from django.test import TestCase, SimpleTestCase
-from .fields import SegmentsField
+from recite.fields import SegmentsField
 
 
 class SegmentsFieldTestCase(TestCase):
@@ -99,12 +99,12 @@ class SegmentsFieldDeconstructionTests(SimpleTestCase):
 
     def test_segmentsfield(self):
         name, path, args, kwargs = self.field.deconstruct()
-        self.assertEqual(path, "quran.fields.SegmentsField")
+        self.assertEqual(path, "recite.fields.SegmentsField")
         self.assertEqual(args, [])
         self.assertEqual(kwargs, {})
         self.field = SegmentsField(null=True, blank=True)
         name, path, args, kwargs = self.field.deconstruct()
-        self.assertEqual(path, "quran.fields.SegmentsField")
+        self.assertEqual(path, "recite.fields.SegmentsField")
         self.assertEqual(args, [])
         self.assertEqual(kwargs, {"null": True, "blank": True})
 
