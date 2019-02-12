@@ -3,7 +3,7 @@ FROM alpine
 # init
 RUN mkdir /www
 WORKDIR /www
-COPY requirements.txt /www/
+COPY requirements/ /www/requirements
 
 # setup
 RUN apk update
@@ -16,7 +16,7 @@ RUN apk --no-cache add \
     build-base \
     gettext
 RUN pip3 install --upgrade pip
-RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements/production.txt
 
 # clean
 RUN apk del -r python3-dev postgresql

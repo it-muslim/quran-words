@@ -5,6 +5,7 @@
 .vscode
 staticfiles/
 media/
-postgres_database/*
-!postgres_database/.gitkeep
+postgres/*
+!postgres/.gitkeep
 .pylintrc
+venv/
