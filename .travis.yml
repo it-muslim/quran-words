@@ -1,0 +1,12 @@
+sudo: required
+dist: trusty
+
+services:
+- docker
+
+install:
+- docker-compose -f docker-compose-testing.yml pull
+- docker-compose -f docker-compose-testing.yml build
+
+script:
+- docker-compose -f docker-compose-testing.yml run -e DJANGO_SETTINGS_MODULE=config.settings.development --no-deps --rm backend python3 manage.py test
