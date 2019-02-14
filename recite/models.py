@@ -54,8 +54,7 @@ class Recitation(models.Model):
             "recite",
             self.reciter.slug,
             f"{self.ayah.surah.number:03d}",
-            f"{self.ayah.number:03d}"
-            f"{file_extension}",
+            f"{self.ayah.number:03d}{file_extension}",
         )
 
     audio = models.FileField(
@@ -69,7 +68,7 @@ class Recitation(models.Model):
 def auto_delete_files_on_delete(sender, instance, **kwargs):
     """
     Deletes Recitation files from filesystem
-    when corresponding `Reciter` object is  deleted.
+    when the corresponding `Reciter` object is deleted.
     """
     reciter_path = os.path.join(
         settings.MEDIA_ROOT, 'recite', str(instance.slug))
@@ -80,8 +79,8 @@ def auto_delete_files_on_delete(sender, instance, **kwargs):
 @receiver(models.signals.pre_save, sender=Reciter)
 def auto_delete_files_on_change(sender, instance, **kwargs):
     """
-    Deletes Recitation files from filesystem
-    when corresponding `Reciter` object is changed.
+    Deletes audio files from the filesystem
+    when the corresponding `Reciter` object is changed.
     """
     try:
         old_instance = Reciter.objects.get(id=instance.id)
