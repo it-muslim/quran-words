@@ -74,22 +74,3 @@ def auto_delete_files_on_delete(sender, instance, **kwargs):
         settings.MEDIA_ROOT, 'recite', str(instance.slug))
     if os.path.exists(reciter_path):
         shutil.rmtree(reciter_path)
-
-
-@receiver(models.signals.pre_save, sender=Reciter)
-def auto_delete_files_on_change(sender, instance, **kwargs):
-    """
-    Deletes audio files from the filesystem
-    when the corresponding `Reciter` object is changed.
-    """
-    try:
-        old_instance = Reciter.objects.get(id=instance.id)
-    except Reciter.DoesNotExist:
-        return
-    if old_instance.slug\
-            and instance.slug\
-            and old_instance.slug != instance.slug:
-        reciter_path = os.path.join(
-            settings.MEDIA_ROOT, 'recite', str(old_instance.slug))
-        if os.path.exists(reciter_path):
-            shutil.rmtree(reciter_path)

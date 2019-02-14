@@ -47,6 +47,9 @@ class ReciterAdmin(admin.ModelAdmin):
     Modified save_model method allows to save Recitations
     objects at the same model creation form
     """
+    def has_change_permission(self, request, obj=None):
+        return False
+
     inlines = [
         RecitationInline,
     ]
