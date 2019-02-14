@@ -1,23 +1,33 @@
 import csv
 import io
 import json
+import os
+import shutil
+import tempfile
 from zipfile import ZipFile
 
 from django import forms
 from django.contrib import admin
+from django.core.files import File
+from django.forms import BaseInlineFormSet
 
 from quran.models import Ayah
 
 from .models import Recitation, Reciter
-import os
-import tempfile
-import shutil
-from django.core.files import File
+
+
+class RecitationFormSet(BaseInlineFormSet):
+    """FormSet for Recitation shows limited value of Recitations"""
+
+    def get_queryset(self):
+        qs = super(RecitationFormSet, self).get_queryset()
+        return qs[:10]
 
 
 class RecitationInline(admin.TabularInline):
     """Inline tab of Recitations in admin page of Reciter"""
     # Hide editing of single Recitation field
+
     def has_add_permission(self, request, obj=None):
         return False
 
@@ -26,8 +36,8 @@ class RecitationInline(admin.TabularInline):
 
     def has_delete_permission(self, request, obj=None):
         return False
-
     model = Recitation
+    formset = RecitationFormSet
 
 
 class ReciterForm(forms.ModelForm):
@@ -47,6 +57,7 @@ class ReciterAdmin(admin.ModelAdmin):
     Modified save_model method allows to save Recitations
     objects at the same model creation form
     """
+
     def has_change_permission(self, request, obj=None):
         return False
 
