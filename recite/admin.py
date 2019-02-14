@@ -91,13 +91,13 @@ class ReciterAdmin(admin.ModelAdmin):
         shutil.rmtree(temp_dir)
 
     def get_file_paths(self, temp_dir):
-        """Return file paths from temp_dir checking subdirectories"""
-        file_paths = []
+        """Return file paths dict from temp_dir checking subdirectories"""
+        file_paths = {}
         for root, directories, files in os.walk(temp_dir):
             for filename in files:
                 if filename.endswith('.mp3'):
                     filepath = os.path.join(root, filename)
-                    file_paths.append(filepath)
+                    file_paths[filename] = filepath
 
         return file_paths
 
@@ -116,11 +116,7 @@ class ReciterAdmin(admin.ModelAdmin):
         """Search in uploaded files for corresponding ayah"""
 
         file_ayah_name_expected = str(ayah) + '.mp3'
-        file_ayah = None
-        for file_path in file_paths:
-            if file_ayah_name_expected == os.path.basename(file_path):
-                file_ayah = file_path
-                break
+        file_ayah = file_paths.get(file_ayah_name_expected)
 
         if not file_ayah:
             raise ValueError(
