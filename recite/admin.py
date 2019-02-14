@@ -92,8 +92,9 @@ class ReciterAdmin(admin.ModelAdmin):
         file_paths = []
         for root, directories, files in os.walk(temp_dir):
             for filename in files:
-                filepath = os.path.join(root, filename)
-                file_paths.append(filepath)
+                if filename.endswith('.mp3'):
+                    filepath = os.path.join(root, filename)
+                    file_paths.append(filepath)
 
         return file_paths
 
