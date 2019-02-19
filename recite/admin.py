@@ -77,7 +77,7 @@ class ReciterAdmin(admin.ModelAdmin):
         # process audio zip file uploaded
         audio_zip_file = form.cleaned_data['audio_zip_file']
         temp_dir = self.get_unzipped_files_dir(audio_zip_file)
-        file_paths = self.get_file_paths(temp_dir)
+        file_paths = self.get_audio_paths(temp_dir)
 
         # create Recitation objects from processed data
         for row in csv_content:
@@ -101,7 +101,7 @@ class ReciterAdmin(admin.ModelAdmin):
 
         shutil.rmtree(temp_dir)
 
-    def get_file_paths(self, temp_dir):
+    def get_audio_paths(self, temp_dir):
         """Return file paths dict from temp_dir checking subdirectories"""
         file_paths = {}
         for root, directories, files in os.walk(temp_dir):
@@ -130,7 +130,7 @@ class ReciterAdmin(admin.ModelAdmin):
         file_ayah = file_paths.get(file_ayah_name_expected)
 
         if not file_ayah:
-            raise ValueError(
+            raise KeyError(
                 f"Not found Recitation audio file for ayah {ayah}")
 
         return file_ayah
