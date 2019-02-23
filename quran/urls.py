@@ -1,16 +1,16 @@
 '''Quran app api url endpoints'''
-from django.urls import re_path
+from django.urls import path
 
 from . import views
 
 urlpatterns = [
-    re_path(
-        r'quran/(?P<surah_id>\d+)/$',
+    path(
+        'api/quran/<int:surah_id>/',
         views.SurahDetailsView.as_view(),
         name="surah-details"
     ),
-    re_path(
-        r'quran/$',
+    path(
+        'api/quran/',
         views.SurahListView.as_view(),
         name="surahs-all",
     )
