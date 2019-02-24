@@ -69,14 +69,15 @@ class ReciterAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
 
-        # Create dict segments_dict[surah][ayah] = segments
-        segments_dict = self.get_segments_dict(request=request, form=form)
-
-        # Extract audio files zip to temp directory
-        audio_zip_file = form.cleaned_data['audio_zip_file']
-        audio_files = ZipFile(audio_zip_file, 'r')
+        # Create a dict segments_dict[surah][ayah] = segments
+        segments_file = form.cleaned_data['segments_file'].file
+        segments_dict = self.get_segments_dict(request.encoding, segments_file)
 
         with tempfile.TemporaryDirectory() as temp_dir:
+            # Extract zipped audio files to temp directory
+            audio_zip_file = form.cleaned_data['audio_zip_file']
+            audio_files = ZipFile(audio_zip_file, 'r')
+
             audio_files.extractall(temp_dir)
 
             # let's create dict file_paths[surah][ayah] = file_path
@@ -124,7 +125,7 @@ class ReciterAdmin(admin.ModelAdmin):
 
         return file_paths
 
-    def get_segments_dict(self, request, form):
+    def get_segments_dict(self, encoding, segments_file):
         """
         Process csv file uploaded and return dict
         segments_dict[surah][ayah] = [segments]
@@ -132,9 +133,8 @@ class ReciterAdmin(admin.ModelAdmin):
 
         segments_dict = defaultdict(lambda: defaultdict(list))
 
-        segments_file = form.cleaned_data['segments_file'].file
         segments_file = io.TextIOWrapper(
-            segments_file, encoding=request.encoding)
+            segments_file, encoding=encoding)
         segments_file.seek(0)
         csv_content_dict = csv.DictReader(segments_file)
         csv_content_sorted = sorted(
