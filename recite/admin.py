@@ -81,7 +81,7 @@ class ReciterAdmin(admin.ModelAdmin):
             audio_files.extractall(temp_dir)
 
             # let's create dict file_paths[surah][ayah] = file_path
-            file_paths = self.get_file_paths_dict(temp_dir=temp_dir)
+            file_paths = self.get_file_paths_dict(temp_dir)
             # let's create Recitations from segments and file_paths
             for surah_number, ayahs in segments_dict.items():
                 for ayah_number, segments in ayahs.items():
@@ -101,14 +101,14 @@ class ReciterAdmin(admin.ModelAdmin):
                             audio=file_ayah
                         )
 
-    def get_file_paths_dict(self, temp_dir):
+    def get_file_paths_dict(self, directory):
         """
         Process audio zip file uploaded and create dict
         :return: file_paths[surah][ayah] = file_path
         """
         file_paths = defaultdict(lambda: defaultdict(int))
 
-        for root, _directories, files in os.walk(temp_dir):
+        for root, _directories, files in os.walk(directory):
             for filename in files:
                 if filename.endswith('.mp3'):
                     filepath = os.path.join(root, filename)
