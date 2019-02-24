@@ -5,12 +5,12 @@ from . import views
 
 urlpatterns = [
     path(
-        'api/quran/<int:surah_id>/',
+        'api/quran/surah/<int:number>/',
         views.SurahDetailsView.as_view(),
         name="surah-details"
     ),
     path(
-        'api/quran/',
+        'api/quran/surah/',
         views.SurahListView.as_view(),
         name="surahs-all",
     )

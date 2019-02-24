@@ -31,7 +31,7 @@ class GetQuran(APITestCase):
     def test_get_ayahs_of_surahs(self):
         '''
         This test ensures that ayahs is loaded correctly to database
-        making a GET request to the quran/{surah_id} endpoint
+        making a GET request to the api/quran/surah/{number} endpoint
         '''
         # hit the API endpoint for each surah
         surahs = list(range(1, 115))
@@ -41,7 +41,7 @@ class GetQuran(APITestCase):
                 reverse(
                     "surah-details",
                     kwargs={
-                        "surah_id": surah_id
+                        "number": surah_id
                     }
                 )
             )
@@ -60,7 +60,7 @@ class GetQuran(APITestCase):
             reverse(
                 "surah-details",
                 kwargs={
-                    "surah_id": 115
+                    "number": 115
                 }
             )
         )
