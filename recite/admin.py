@@ -74,7 +74,7 @@ class ReciterAdmin(admin.ModelAdmin):
         segments_dict = self.get_segments_dict(request.encoding, segments_file)
 
         with tempfile.TemporaryDirectory() as temp_dir:
-            # Extract zipped audio files to temp directory
+            # Extract zipped audio files to a temp directory
             audio_zip_file = form.cleaned_data['audio_zip_file']
             audio_files = ZipFile(audio_zip_file, 'r')
 
