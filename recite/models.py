@@ -67,7 +67,7 @@ class Recitation(models.Model):
 @receiver(models.signals.post_delete, sender=Reciter)
 def auto_delete_files_on_delete(sender, instance, **kwargs):
     """
-    Deletes Recitation files from filesystem
+    Deletes Recitation files from the filesystem
     when the corresponding `Reciter` object is deleted.
     """
     reciter_path = os.path.join(
