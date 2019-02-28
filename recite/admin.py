@@ -154,6 +154,6 @@ class ReciterAdmin(admin.ModelAdmin):
             except ValueError:
                 print(f"Not normal format for csv at row {row}")
 
-            segments_dict[surah_number][ayah_number] = segments
+            segments_dict[surah_number][ayah_number] = segments_list
 
         return segments_dict
