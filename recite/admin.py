@@ -8,6 +8,7 @@ from zipfile import ZipFile
 
 from django import forms
 from django.contrib import admin
+from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.forms import BaseInlineFormSet
 
@@ -82,6 +83,7 @@ class ReciterAdmin(admin.ModelAdmin):
 
             # let's create dict file_paths[surah][ayah] = file_path
             file_paths = self.get_file_paths_dict(temp_dir)
+            self.check_segments_has_files(segments_dict, file_paths)
             # let's create Recitations from segments and file_paths
             for surah_number, ayahs in segments_dict.items():
                 for ayah_number, segments in ayahs.items():
@@ -100,6 +102,21 @@ class ReciterAdmin(admin.ModelAdmin):
                             segments=segments,
                             audio=file_ayah
                         )
+
+    def check_segments_has_files(self, segments_dict, file_paths):
+        '''Check if each segments row has corresponding audio file'''
+        not_found_files_for_segments = []
+
+        for surah_number, ayahs in segments_dict.items():
+            for ayah_number, segments in ayahs.items():
+                if not file_paths[surah_number][ayah_number]:
+                    not_found_files_for_segments.append(
+                        f"{surah_number:03d}{ayah_number:03d}.mp3")
+        if not_found_files_for_segments:
+            raise ValidationError(
+                message="No audio files "
+                f"{', '.join(not_found_files_for_segments)} found",
+            )
 
     def get_file_paths_dict(self, directory):
         """
