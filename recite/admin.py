@@ -142,10 +142,9 @@ class ReciterAdmin(admin.ModelAdmin):
 
         for row in csv_content_sorted:
             segments_list = json.loads(row.get("segments"))
-            segments = ",".join(
+            segments_string = ",".join(
                 (f"{segment[2]}:{segment[3]}" for segment in segments_list)
             )
-
             surah_str = row.get('sura')
             ayah_str = row.get('ayat')
             try:
@@ -153,7 +152,6 @@ class ReciterAdmin(admin.ModelAdmin):
                 ayah_number = int(ayah_str)
             except ValueError:
                 print(f"Not normal format for csv at row {row}")
-
-            segments_dict[surah_number][ayah_number] = segments_list
+            segments_dict[surah_number][ayah_number] = segments_string
 
         return segments_dict
