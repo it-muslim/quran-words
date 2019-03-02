@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 
 from ..models import Surah
-from .serializers import SurahListSerializer, SuraDetailsSerializer
+from .serializers import SurahListSerializer, SurahDetailsSerializer
 
 
 class SurahListRetrieveView(viewsets.ReadOnlyModelViewSet):
@@ -13,5 +13,5 @@ class SurahListRetrieveView(viewsets.ReadOnlyModelViewSet):
     def get_serializer_class(self):
         """Returns appreciate serializer class for the given action."""
         if self.action == "retrieve":
-            return SuraDetailsSerializer
+            return SurahDetailsSerializer
         return super().get_serializer_class()

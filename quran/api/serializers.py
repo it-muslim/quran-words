@@ -19,7 +19,7 @@ class AyahSerializer(serializers.ModelSerializer):
         fields = ('number', 'text')
 
 
-class SuraDetailsSerializer(serializers.ModelSerializer):
+class SurahDetailsSerializer(serializers.ModelSerializer):
     """Serializer for detailed Sura detailed."""
 
     ayahs = AyahSerializer(many=True, read_only=True)
