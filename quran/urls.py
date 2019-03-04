@@ -12,6 +12,6 @@ urlpatterns = [
     path(
         'api/quran/surah/',
         views.SurahListView.as_view(),
-        name="surahs-all",
+        name="surahs-list",
     )
 ]
