@@ -1,23 +1,34 @@
 import csv
 import io
 import json
+import os
+import tempfile
+from collections import defaultdict
 from zipfile import ZipFile
 
 from django import forms
 from django.contrib import admin
+from django.core.exceptions import ValidationError
+from django.core.files import File
+from django.forms import BaseInlineFormSet
 
 from quran.models import Ayah
 
 from .models import Recitation, Reciter
-import os
-import tempfile
-import shutil
-from django.core.files import File
+
+
+class RecitationFormSet(BaseInlineFormSet):
+    """FormSet for Recitation shows limited value of Recitations"""
+
+    def get_queryset(self):
+        qs = super(RecitationFormSet, self).get_queryset()
+        return qs[:10]
 
 
 class RecitationInline(admin.TabularInline):
     """Inline tab of Recitations in admin page of Reciter"""
     # Hide editing of single Recitation field
+
     def has_add_permission(self, request, obj=None):
         return False
 
@@ -26,8 +37,8 @@ class RecitationInline(admin.TabularInline):
 
     def has_delete_permission(self, request, obj=None):
         return False
-
     model = Recitation
+    formset = RecitationFormSet
 
 
 class ReciterForm(forms.ModelForm):
@@ -47,6 +58,10 @@ class ReciterAdmin(admin.ModelAdmin):
     Modified save_model method allows to save Recitations
     objects at the same model creation form
     """
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
     inlines = [
         RecitationInline,
     ]
@@ -55,89 +70,105 @@ class ReciterAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         super().save_model(request, obj, form, change)
 
-        # process csv file uploaded
+        # Create a dict segments_dict[surah][ayah] = segments
         segments_file = form.cleaned_data['segments_file'].file
-        csv_content = self.read_segments_csv(
-            segments_file, encoding=request.encoding)
+        segments_dict = self.get_segments_dict(request.encoding, segments_file)
 
-        # process audio zip file uploaded
-        audio_zip_file = form.cleaned_data['audio_zip_file']
-        temp_dir = self.get_unzipped_files_dir(audio_zip_file)
-        file_paths = self.get_file_paths(temp_dir)
+        with tempfile.TemporaryDirectory() as temp_dir:
+            # Extract zipped audio files to a temp directory
+            audio_zip_file = form.cleaned_data['audio_zip_file']
+            audio_files = ZipFile(audio_zip_file, 'r')
 
-        # create Recitation objects from processed data
-        for row in csv_content:
-            segments_list = json.loads(row.get("segments"))
-            segments = ",".join(
-                (f"{segment[2]}:{segment[3]}" for segment in segments_list)
+            audio_files.extractall(temp_dir)
+
+            # let's create dict file_paths[surah][ayah] = file_path
+            file_paths = self.get_file_paths_dict(temp_dir)
+            self.check_segments_has_files(segments_dict, file_paths)
+            # let's create Recitations from segments and file_paths
+            for surah_number, ayahs in segments_dict.items():
+                for ayah_number, segments in ayahs.items():
+                    with open(file_paths[surah_number][ayah_number], 'rb')\
+                            as audio_file:
+
+                        file_ayah = File(audio_file)
+                        ayah = Ayah.objects.get(
+                            number=ayah_number,
+                            surah=surah_number,
+                        )
+
+                        Recitation.objects.get_or_create(
+                            ayah=ayah,
+                            reciter=obj,
+                            segments=segments,
+                            audio=file_ayah
+                        )
+
+    def check_segments_has_files(self, segments_dict, file_paths):
+        '''Check if each segments row has corresponding audio file'''
+        not_found_files_for_segments = []
+
+        for surah_number, ayahs in segments_dict.items():
+            for ayah_number, segments in ayahs.items():
+                if not file_paths[surah_number][ayah_number]:
+                    not_found_files_for_segments.append(
+                        f"{surah_number:03d}{ayah_number:03d}.mp3")
+        if not_found_files_for_segments:
+            raise ValidationError(
+                message="No audio files "
+                f"{', '.join(not_found_files_for_segments)} found",
             )
 
-            ayah = self.get_ayah_object_from_row(row)
-            file_ayah_path = self.get_file_audio_path(file_paths, ayah)
+    def get_file_paths_dict(self, directory):
+        """
+        Process audio zip file uploaded and create dict
+        :return: file_paths[surah][ayah] = file_path
+        """
+        file_paths = defaultdict(lambda: defaultdict(int))
 
-            with open(file_ayah_path, 'rb') as f:
-                file_ayah = File(f)
-
-                recitation, _ = Recitation.objects.get_or_create(
-                    ayah=ayah,
-                    reciter=obj,
-                    segments=segments,
-                    audio=file_ayah
-                )
-
-        shutil.rmtree(temp_dir)
-
-    def get_file_paths(self, temp_dir):
-        """Return file paths from temp_dir checking subdirectories"""
-        file_paths = []
-        for root, directories, files in os.walk(temp_dir):
+        for root, _directories, files in os.walk(directory):
             for filename in files:
-                filepath = os.path.join(root, filename)
-                file_paths.append(filepath)
+                if filename.endswith('.mp3'):
+                    filepath = os.path.join(root, filename)
+
+                    # extract surah and ayah number from filename
+                    surah_str = filename[:3]
+                    ayah_str = filename[3:6]
+                    try:
+                        surah_number = int(surah_str)
+                        ayah_number = int(ayah_str)
+                    except ValueError:
+                        print(f"Not normal format mp3 file {filename}")
+                    file_paths[surah_number][ayah_number] = filepath
 
         return file_paths
 
-    def get_ayah_object_from_row(self, row):
-        """Getting Ayah object for Recitation from csv file row"""
-        ayah_id = row.get('ayat')
-        surah_id = row.get('sura')
+    def get_segments_dict(self, encoding, segments_file):
+        """
+        Process csv file uploaded and return dict
+        segments_dict[surah][ayah] = [segments]
+        """
 
-        ayah = Ayah.objects.get(
-            number=ayah_id,
-            surah=surah_id,
-        )
-        return ayah
+        segments_dict = defaultdict(lambda: defaultdict(list))
 
-    def get_file_audio_path(self, file_paths, ayah):
-        """Search in uploaded files for corresponding ayah"""
-
-        file_ayah_name_expected = str(ayah) + '.mp3'
-        file_ayah = None
-        for file_path in file_paths:
-            if file_ayah_name_expected == os.path.basename(file_path):
-                file_ayah = file_path
-                break
-
-        if not file_ayah:
-            raise ValueError(
-                f"Not found Recitation audio file for ayah {ayah}")
-
-        return file_ayah
-
-    def read_segments_csv(self, segments_file, encoding):
-        """Return csv file as ordered dict"""
-        segments_file = io.TextIOWrapper(segments_file, encoding=encoding)
+        segments_file = io.TextIOWrapper(
+            segments_file, encoding=encoding)
         segments_file.seek(0)
-        reader = csv.DictReader(segments_file)
-        reader = sorted(reader, key=lambda x: int(x['sura']))
+        csv_content_dict = csv.DictReader(segments_file)
+        csv_content_sorted = sorted(
+            csv_content_dict, key=lambda x: int(x['sura']))
 
-        return reader
+        for row in csv_content_sorted:
+            segments_list = json.loads(row.get("segments"))
+            segments_string = ",".join(
+                (f"{segment[2]}:{segment[3]}" for segment in segments_list)
+            )
+            surah_str = row.get('sura')
+            ayah_str = row.get('ayat')
+            try:
+                surah_number = int(surah_str)
+                ayah_number = int(ayah_str)
+            except ValueError:
+                print(f"Not normal format for csv at row {row}")
+            segments_dict[surah_number][ayah_number] = segments_string
 
-    def get_unzipped_files_dir(self, audio_zip_file):
-        """Return temporary directory of unzipped files"""
-        audio_files = ZipFile(audio_zip_file, 'r')
-
-        temp_dir = tempfile.mkdtemp()
-        audio_files.extractall(temp_dir)
-
-        return temp_dir
+        return segments_dict
