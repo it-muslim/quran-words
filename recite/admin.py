@@ -167,8 +167,8 @@ class ReciterAdmin(admin.ModelAdmin):
             try:
                 surah_number = int(surah_str)
                 ayah_number = int(ayah_str)
+                segments_dict[surah_number][ayah_number] = segments_string
             except ValueError:
                 print(f"Not normal format for csv at row {row}")
-            segments_dict[surah_number][ayah_number] = segments_string
 
         return segments_dict
