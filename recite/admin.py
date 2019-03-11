@@ -72,7 +72,8 @@ class ReciterAdmin(admin.ModelAdmin):
 
         # Create a dict segments_dict[surah][ayah] = segments
         segments_file = form.cleaned_data['segments_file'].file
-        segments_dict = self.get_segments_dict(request.encoding, segments_file)
+        csv_content_list = self.get_csv_list(request.encoding, segments_file)
+        segments_dict = self.get_segments_dict(csv_content_list)
 
         with tempfile.TemporaryDirectory() as temp_dir:
             # Extract zipped audio files to a temp directory
@@ -103,7 +104,8 @@ class ReciterAdmin(admin.ModelAdmin):
                             audio=file_ayah
                         )
 
-    def check_segments_has_files(self, segments_dict, file_paths):
+    @staticmethod
+    def check_segments_has_files(segments_dict, file_paths):
         '''Check if each segments row has corresponding audio file'''
         not_found_files_for_segments = []
 
@@ -118,7 +120,8 @@ class ReciterAdmin(admin.ModelAdmin):
                 f"{', '.join(not_found_files_for_segments)} found",
             )
 
-    def get_file_paths_dict(self, directory):
+    @staticmethod
+    def get_file_paths_dict(directory):
         """
         Process audio zip file uploaded and create dict
         :return: file_paths[surah][ayah] = file_path
@@ -137,25 +140,33 @@ class ReciterAdmin(admin.ModelAdmin):
                         surah_number = int(surah_str)
                         ayah_number = int(ayah_str)
                     except ValueError:
-                        print(f"Not normal format mp3 file {filename}")
-                    file_paths[surah_number][ayah_number] = filepath
-
+                        print(f"Not normal format mp3 file {filename} ignored")
+                    else:
+                        file_paths[surah_number][ayah_number] = filepath
         return file_paths
 
-    def get_segments_dict(self, encoding, segments_file):
+    @staticmethod
+    def get_csv_list(encoding, segments_file):
         """
-        Process csv file uploaded and return dict
-        segments_dict[surah][ayah] = [segments]
+        Process csv file uploaded and return
+        csv content as list of OrderedDicts
         """
-
-        segments_dict = defaultdict(lambda: defaultdict(list))
-
         segments_file = io.TextIOWrapper(
             segments_file, encoding=encoding)
         segments_file.seek(0)
         csv_content_dict = csv.DictReader(segments_file)
-        csv_content_sorted = sorted(
-            csv_content_dict, key=lambda x: int(x['sura']))
+        csv_content_sorted = list(sorted(
+            csv_content_dict, key=lambda x: int(x['sura'])))
+
+        return csv_content_sorted
+
+    @staticmethod
+    def get_segments_dict(csv_content_sorted):
+        """
+        Process sorted csv dict and return dict
+        segments_dict[surah][ayah] = [segments]
+        """
+        segments_dict = defaultdict(lambda: defaultdict(list))
 
         for row in csv_content_sorted:
             segments_list = json.loads(row.get("segments"))
@@ -167,8 +178,8 @@ class ReciterAdmin(admin.ModelAdmin):
             try:
                 surah_number = int(surah_str)
                 ayah_number = int(ayah_str)
-                segments_dict[surah_number][ayah_number] = segments_string
             except ValueError:
-                print(f"Not normal format for csv at row {row}")
-
+                print(f"Not normal format for csv at row {row} ignored")
+            else:
+                segments_dict[surah_number][ayah_number] = segments_string
         return segments_dict
