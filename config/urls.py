@@ -10,5 +10,5 @@ router.register(r'quran/surah', quran_views.SurahListRetrieveView, base_name="qu
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    url(r'^api/', include((router.urls, 'api'), namespace='api')),
+    url('api/', include((router.urls, 'api'), namespace='api')),
 ]
