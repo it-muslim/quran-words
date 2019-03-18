@@ -3,6 +3,7 @@ Admin tests.
 
 Tests the various admin callbacks.
 """
+import os
 from unittest import mock
 from django.test import TestCase
 from recite.admin import ReciterAdmin
@@ -26,8 +27,8 @@ class ReciteAdminTest(TestCase):
         with mock.patch('os.walk') as mock_walk:
             # mocked os.walk returns fake directory
             mock_walk.return_value = [
-                ('\\tmp', ['Al-Test'], []),
-                ('\\tmp\\Al-Test', [], [
+                ('tmp', ['Al-Test'], []),
+                (os.path.join('tmp', 'Al-Test'), [], [
                     'index.html',
                     '000_checksum.md5',
                     '001001.mp3',   # valid filename format
@@ -39,10 +40,12 @@ class ReciteAdminTest(TestCase):
 
         expected_dict = {
             1: {
-                1: '\\tmp\\Al-Test\\001001.mp3',
-                2: '\\tmp\\Al-Test\\001002.mp3'
+                1: os.path.join('tmp', 'Al-Test', '001001.mp3'),
+                2: os.path.join('tmp', 'Al-Test', '001002.mp3'),
             },
-            2: {1: '\\tmp\\Al-Test\\002001.mp3'},
+            2: {
+                1: os.path.join('tmp', 'Al-Test', '002001.mp3'),
+            },
         }
 
         self.assertDictEqual(file_paths, expected_dict)
