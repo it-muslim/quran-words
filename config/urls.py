@@ -6,10 +6,17 @@ from django.urls import include, path
 from rest_framework import routers
 
 from quran.api import views as quran_views
+from recite.api import views as recite_views
+
 
 router = routers.SimpleRouter()
 router.register(
     r'surahs', quran_views.SurahListRetrieveView, base_name="surah")
+router.register(
+    r'reciters', recite_views.ReciterListRetrieveView, base_name="reciter")
+router.register(
+    r'recitations', recite_views.RecitationListRetrieveView,
+    base_name="recitation")
 
 urlpatterns = [
     path('admin/', admin.site.urls),
