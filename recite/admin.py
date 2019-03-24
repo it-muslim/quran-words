@@ -12,7 +12,7 @@ from django.core.exceptions import ValidationError
 from django.core.files import File
 from django.forms import BaseInlineFormSet
 
-from quran.models import Ayah
+from quran.models import Surah, Ayah
 
 from .models import Recitation, Reciter
 
@@ -54,7 +54,8 @@ class ReciterForm(forms.ModelForm):
 @admin.register(Reciter)
 class ReciterAdmin(admin.ModelAdmin):
     """
-    Reciter admin page including Recitations
+    Reciter admin page including Recitations.
+
     Modified save_model method allows to save Recitations
     objects at the same model creation form
     """
@@ -92,12 +93,15 @@ class ReciterAdmin(admin.ModelAdmin):
                             as audio_file:
 
                         file_ayah = File(audio_file)
+                        surah = Surah.objects.get(
+                            number=surah_number
+                        )
                         ayah = Ayah.objects.get(
                             number=ayah_number,
                             surah=surah_number,
                         )
-
                         Recitation.objects.get_or_create(
+                            surah=surah,
                             ayah=ayah,
                             reciter=obj,
                             segments=segments,
