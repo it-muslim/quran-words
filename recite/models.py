@@ -39,7 +39,9 @@ class Recitation(models.Model):
     an information about times when each word in this audio file
     was pronounced.
     """
-
+    surah = models.ForeignKey(
+        'quran.Surah', on_delete=models.CASCADE, related_name="recitations"
+    )
     ayah = models.ForeignKey(
         'quran.Ayah', on_delete=models.CASCADE, related_name="recitations"
     )
