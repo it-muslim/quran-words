@@ -9,7 +9,7 @@ from quran.api import views as quran_views
 
 router = routers.SimpleRouter()
 router.register(
-    r'quran/surah', quran_views.SurahListRetrieveView, base_name="quran")
+    r'surahs', quran_views.SurahListRetrieveView, base_name="surah")
 
 urlpatterns = [
     path('admin/', admin.site.urls),

@@ -10,7 +10,7 @@ class TestSurahListRetrieveView(APITestCase):
 
     def test_list(self):
         MAX_SURAH_NUMBER = 114
-        url = reverse("api:quran-list")
+        url = reverse("api:surah-list")
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), MAX_SURAH_NUMBER)
@@ -20,7 +20,7 @@ class TestSurahListRetrieveView(APITestCase):
 
     def test_details(self):
         SURAH_NUMBER = 1
-        url = reverse("api:quran-detail", kwargs={"number": SURAH_NUMBER})
+        url = reverse("api:surah-detail", kwargs={"number": SURAH_NUMBER})
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
 
