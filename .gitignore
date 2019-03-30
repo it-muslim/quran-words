@@ -9,3 +9,4 @@ postgres/*
 !postgres/.gitkeep
 .pylintrc
 venv/
+collected_static/
