@@ -1,3 +1,5 @@
+# before run use command `docker volume create postgres`
+# run docker-compose up -f docker-compose-win.yml
 version: "3"
 services:
   web:
@@ -26,7 +28,7 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      - postgres:/var/lib/postgresql/data
 
   adminer:
     container_name: adminer01
@@ -48,3 +50,7 @@ services:
       - "80:80"
     depends_on:
       - web
+
+volumes:
+  postgres:
+    external: true
