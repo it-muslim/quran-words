@@ -27,7 +27,7 @@ QuranWords Project in development and production environments.
 7. - Windows: If it's first time you run project on machine, create volume to store persistent data (postgres)
     `docker volume create --name=postgres`
     and run
-    `docker-compose up -f docker-compose-win.yml`
+    `docker-compose -f docker-compose-win.yml up`
    - Linux/macOS::
     `docker-compose up`
 

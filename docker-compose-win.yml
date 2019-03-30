@@ -1,5 +1,5 @@
 # before run use command `docker volume create postgres`
-# run docker-compose up -f docker-compose-win.yml
+# run docker-compose -f docker-compose-win.yml up
 version: "3"
 services:
   web:
