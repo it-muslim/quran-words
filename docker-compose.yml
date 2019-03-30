@@ -5,16 +5,21 @@ services:
     container_name: web01
     env_file:
       - ./.env
-    command: python3 manage.py runserver 0.0.0.0:8000
+    command: >
+            sh -c "python3 manage.py collectstatic --no-input &&
+            python3 manage.py makemigrations &&
+            python3 manage.py migrate &&
+            gunicorn config.wsgi -b 0.0.0.0:8000 --workers 3 --timeout 600"
     volumes:
       - .:/www
     ports:
       - "8000:8000"
     depends_on:
       - db
+
   db:
     container_name: db01
-    image: "postgres:10.3-alpine"
+    image: "postgres:10.5-alpine"
     restart: always
     env_file:
       - ./.env
@@ -22,14 +27,28 @@ services:
       - "5432:5432"
     volumes:
       - postgres:/var/lib/postgresql/data
+
   adminer:
-    container_name: adminer
+    container_name: adminer01
     image: adminer
     restart: always
     ports:
       - "8080:8080"
     env_file:
       - ./.env
+
+  nginx:
+    container_name: nginx01
+    image: nginx:latest
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+      - ./media:/var/www/quran-words/media
+      - ./collected_static:/var/www/quran-words/collected_static
+    ports:
+      - "80:80"
+    depends_on:
+      - web
+
 volumes:
   postgres:
     external: true
