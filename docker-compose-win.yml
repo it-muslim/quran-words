@@ -4,7 +4,7 @@ version: "3"
 services:
   web:
     build: .
-    container_name: web01
+    container_name: web
     env_file:
       - ./.env
     entrypoint: "/www/entrypoint.sh"
@@ -16,7 +16,7 @@ services:
       - db
 
   db:
-    container_name: db01
+    container_name: db
     image: "postgres:10.5-alpine"
     restart: always
     env_file:
@@ -27,7 +27,7 @@ services:
       - postgres:/var/lib/postgresql/data
 
   adminer:
-    container_name: adminer01
+    container_name: adminer
     image: adminer
     restart: always
     ports:
@@ -36,7 +36,7 @@ services:
       - ./.env
 
   nginx:
-    container_name: nginx01
+    container_name: nginx
     image: nginx:latest
     volumes:
       - ./nginx:/etc/nginx/conf.d
