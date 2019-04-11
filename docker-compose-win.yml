@@ -8,6 +8,7 @@ services:
     env_file:
       - ./.env
     entrypoint: "/www/entrypoint.sh"
+    command: "gunicorn config.wsgi -b 0.0.0.0:8000 --workers 3 --timeout 600"
     volumes:
       - .:/www
     expose:
