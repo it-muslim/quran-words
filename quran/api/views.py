@@ -5,7 +5,15 @@ from .serializers import SurahListSerializer, SurahDetailsSerializer
 
 
 class SurahListRetrieveView(viewsets.ReadOnlyModelViewSet):
-    """View that allows to list and retrieve Surah."""
+    """
+    Get method handler for list of Surahs.
+
+    retrieve:
+    Return the surah by given number.
+
+    list:
+    Return a list of all the surahs.
+    """
 
     lookup_field = 'number'
     queryset = Surah.objects.all()
