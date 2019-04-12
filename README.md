@@ -22,16 +22,15 @@ QuranWords Project in development and production environments.
     `cp .env.example .env`
 6. Edit .env file DJANGO_EXECUTION_ENVIRONMENT line, to run project with postgres database
     `DJANGO_EXECUTION_ENVIRONMENT=PRODUCTION`
-7. If it's first time you run project on machine, create volume to store persistent data (postgres)
+    `DEBUG=0`
+
+7. - Windows: If it's first time you run project on machine, create volume to store persistent data (postgres)
     `docker volume create --name=postgres`
-8. Start containers
+    and run
+    `docker-compose -f docker-compose-win.yml up`
+   - Linux/macOS::
     `docker-compose up`
-9. At first start it should create database for project, so you need to restart the project
-    Stop running containers `Ctrl + C`
-    Start them again `docker-compose up`
-10. Check  containers are running:
-    Django at http://127.0.0.1:8000 (for linux) or http://192.168.99.100:8000 (for windows)
-11. To access running container. Start new terminal windows, and run
-    `docker exec -it web01 sh`
-12. Run migrations for django: 
-    `python3 manage.py migrate`
+
+8. Check  containers are running:
+    - Windows: http://192.168.99.100/admin/
+    - Linux/macOS: at http://127.0.0.1/admin/
