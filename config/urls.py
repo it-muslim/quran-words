@@ -4,10 +4,11 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from rest_framework import routers
+from rest_framework.documentation import include_docs_urls
+from rest_framework.schemas import get_schema_view
 
 from quran.api import views as quran_views
 from recite.api import views as recite_views
-
 
 router = routers.SimpleRouter()
 router.register(
@@ -19,6 +20,8 @@ router.register(
     base_name="recitation")
 
 urlpatterns = [
+    path('docs/', include_docs_urls(title='Quran API Documentation')),
+    path('schema/', get_schema_view(title="Quran API schema")),
     path('admin/', admin.site.urls),
     url('api/', include((router.urls, 'api'), namespace='api')),
 ]
