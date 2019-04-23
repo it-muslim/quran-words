@@ -3,14 +3,14 @@
 version: "3"
 services:
   web:
-    build: .
+    build: ./django/
     container_name: web
     env_file:
       - ./.env
     entrypoint: "/www/entrypoint.sh"
     command: "gunicorn config.wsgi -b 0.0.0.0:8000 --workers 3 --timeout 600"
     volumes:
-      - .:/www
+      - ./django/:/www
     expose:
       - "8000"
     depends_on:
@@ -41,8 +41,8 @@ services:
     image: nginx:latest
     volumes:
       - ./nginx:/etc/nginx/conf.d
-      - ./media:/var/www/quran-words/media
-      - ./collected_static:/var/www/quran-words/collected_static
+      - ./django/media:/var/www/quran-words/media
+      - ./django/collected_static:/var/www/quran-words/collected_static
     ports:
       - "80:80"
     depends_on:
