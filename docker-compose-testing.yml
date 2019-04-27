@@ -1,7 +1,7 @@
 version: "3"
 services:
   backend:
-    build: .
+    build: ./django/
     restart: on-failure
     environment:
       - DJANGO_SECRET_KEY=secret123
@@ -9,6 +9,6 @@ services:
       - ALLOWED_HOSTS=*
     command: python3 manage.py runserver 0.0.0.0:8000
     volumes:
-      - ./:/www
+      - ./django/:/www
     ports:
       - "8000:8000"
