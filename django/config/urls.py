@@ -20,10 +20,10 @@ router.register(
     base_name="recitation")
 
 urlpatterns = [
-    path('docs/', include_docs_urls(title='Quran API Documentation')),
-    path('schema/', get_schema_view(title="Quran API schema")),
-    path('admin/', admin.site.urls),
     url('api/', include((router.urls, 'api'), namespace='api')),
+    path('api/', include_docs_urls(title='Quran API Documentation')),
+    path('api/schema/', get_schema_view(title="Quran API schema")),
+    path('admin/', admin.site.urls),
 ]
 
 if settings.DEBUG:
