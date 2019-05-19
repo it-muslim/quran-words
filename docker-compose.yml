@@ -34,14 +34,24 @@ services:
     env_file:
       - ./.env
 
+  angular:
+    container_name: angular
+    command: "npm run build -- --output-path=./dist/out --configuration=production"
+    build:
+      context: ./frontend
+    volumes:
+      - ./frontend/angular/dist:/usr/src/app/dist
+
   nginx:
     container_name: nginx
-    image: nginx:latest
+    build: ./nginx/
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - ./django/media:/var/www/quran-words/media
       - ./django/collected_static:/var/www/quran-words/collected_static
+      - ./frontend/angular/dist:/var/www/angular/dist
     ports:
       - "80:80"
     depends_on:
+      - angular
       - web
