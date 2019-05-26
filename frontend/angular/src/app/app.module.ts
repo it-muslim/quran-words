@@ -6,6 +6,8 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HomeComponent } from './home/home.component';
+import { LayoutModule } from '@angular/cdk/layout';
+import { MaterialModule } from './material/material.module';
 
 @NgModule({
   declarations: [
@@ -14,9 +16,11 @@ import { HomeComponent } from './home/home.component';
     HomeComponent
   ],
   imports: [
+    MaterialModule,
     BrowserModule,
     AppRoutingModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    LayoutModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
