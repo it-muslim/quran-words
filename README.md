@@ -1,4 +1,4 @@
-# Quran Words App
+# Quran Words API
 [![Build Status](https://travis-ci.org/it-muslim/quran-words.svg?branch=master)](https://travis-ci.org/it-muslim/quran-words)
 ## Setup
 ### Requirements
@@ -55,3 +55,17 @@ You can run the tests using the following command
 
 Additional information can be found in
 [our wiki](https://github.com/it-muslim/quran-words/wiki/Tests)
+
+## Documentation
+
+You can access documentation by relative `/api/` path of running api server
+API schema located at `/api/schema/`
+
+# Quran Words frontend
+## Setup
+
+Run the following terminal commands to get started:
+    `cd frontend/angular`
+    `npm install`
+    `npm run start`
+    access frontend at [http://127.0.0.1:4200](http://127.0.0.1:4200)
