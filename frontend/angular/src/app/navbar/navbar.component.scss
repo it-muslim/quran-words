@@ -1,0 +1,37 @@
+.mat-toolbar.mat-primary {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+a {
+  color: white;
+  text-decoration: none;
+  transition: 1s;
+  &:hover {
+    color: #00ffff;
+    transition: 1s;
+  }
+}
+
+.navbar {
+  justify-content: space-between;
+}
+
+span {
+  padding-right: 1rem;
+}
+
+.navbar {
+  display: flex;
+  transform: translateY(-100%);
+  transition: transform .5s cubic-bezier(.4,0,.2,1);
+}
+
+.navbar-container:hover .navbar {
+  transform: translateY(0);
+}
+
+.navbar.show {
+  transform: translateY(0);
+}
