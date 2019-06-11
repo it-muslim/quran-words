@@ -6,5 +6,18 @@
         <mat-option *ngFor="let Reciter of reciters" value="reciter.id">{{ Reciter.name }}</mat-option>
       </mat-select>
     </mat-form-field>
+    <mat-form-field *ngIf = "surahs" appearance="outline">
+      <mat-label>Select Surah</mat-label>
+      <mat-select placeholder="Surah" formControlName="surah">
+        <mat-option *ngFor="let Surah of surahs" value="surah.number">
+          {{ Surah.number }} - {{ Surah.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <div class="activation mat-form-field-wrapper">
+      <button mat-fab class="play-button" color="primary">
+        <mat-icon>play_arrow</mat-icon>
+      </button>
+    </div>
   </div>
 </div>
