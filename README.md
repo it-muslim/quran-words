@@ -1,6 +1,6 @@
-# Quran Words API
+# Quran Words
 [![Build Status](https://travis-ci.org/it-muslim/quran-words.svg?branch=master)](https://travis-ci.org/it-muslim/quran-words)
-## Setup
+## API Setup
 ### Requirements
 *Production*:
 
@@ -16,8 +16,7 @@
 
 Run the following terminal commands to get started:
 
-*Production*
-
+*Development*
 - `git clone https://github.com/it-muslim/quran-words.git`
 - `cd quran-words`
 - `cp .env.example .env`
@@ -25,29 +24,19 @@ Run the following terminal commands to get started:
 - `python django\manage.py runserver`
 - `python django\manage.py createsuperuser`
 
-*Development*
-
+*Production*
 - `git clone https://github.com/it-muslim/quran-words.git`
 - `docker-machine start default`
 - `cd quran-words`
 - `cp .env.example .env`
-- Edit .env file DJANGO_EXECUTION_ENVIRONMENT line, to run project with postgres database
-    `DJANGO_EXECUTION_ENVIRONMENT=PRODUCTION`
-    `DEBUG=0`
-- Windows: If it's first time you run project on machine, create volume to store persistent data (postgres)
-
-    `docker volume create --name=postgres`
-
-    and run
-
-    `docker-compose -f docker-compose-win.yml up`
-- Linux/macOS::
-    `docker-compose up`
+- Edit .env file DJANGO_EXECUTION_ENVIRONMENT line, to run project with postgres database `DJANGO_EXECUTION_ENVIRONMENT=PRODUCTION` `DEBUG=0`
+    - Windows: If it's first time you run project on machine, create volume to store persistent data (postgres) `docker volume create --name=postgres` and run `docker-compose -f docker-compose-win.yml up`
+    - Linux/macOS: `docker-compose up`
 - Check  containers are running:
     - Windows: http://192.168.99.100/admin/
     - Linux/macOS: at http://127.0.0.1/admin/
 
-## Testing
+### Testing
 
 You can run the tests using the following command
 
@@ -56,13 +45,12 @@ You can run the tests using the following command
 Additional information can be found in
 [our wiki](https://github.com/it-muslim/quran-words/wiki/Tests)
 
-## Documentation
+### API Documentation
 
 You can access documentation by relative `/api/` path of running api server
 API schema located at `/api/schema/`
 
-# Quran Words frontend
-## Setup
+## Application Setup
 
 Run the following terminal commands to get started:
     `cd frontend/angular`
