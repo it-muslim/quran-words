@@ -9,7 +9,7 @@
     <mat-form-field *ngIf = "surahs" appearance="outline">
       <mat-label>Select Surah</mat-label>
       <mat-select placeholder="Surah" formControlName="surah">
-        <mat-option *ngFor="let Surah of surahs" value="surah.number">
+        <mat-option *ngFor="let Surah of surahs; trackBy:trackByFn" value="surah.number">
           {{ Surah.number }} - {{ Surah.name }}
         </mat-option>
       </mat-select>
