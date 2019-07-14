@@ -15,10 +15,10 @@ export class RestService {
   constructor(private http: HttpClient) { }
 
   getReciters(): Observable<Array<Reciter>> {
-    return this.http.get<Array<Reciter>>(endpoint + 'reciters/');
+    return this.http.get<Array<Reciter>>(`${endpoint}reciters/`);
   }
 
   getSurahs(): Observable<Array<Surah>> {
-    return this.http.get<Array<Surah>>(endpoint + 'surahs/');
+    return this.http.get<Array<Surah>>(`${endpoint}surahs/`);
   }
  }

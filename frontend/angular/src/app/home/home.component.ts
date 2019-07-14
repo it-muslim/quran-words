@@ -41,4 +41,8 @@ export class HomeComponent implements OnInit {
           console.log('error', error);
         }
   }
+
+  trackByFn(index, surah) {
+    return surah.number;
+  }
 }
