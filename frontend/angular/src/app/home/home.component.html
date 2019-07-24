@@ -2,20 +2,20 @@
   <div class="forms">
     <mat-form-field *ngIf = "reciters" appearance="outline">
       <mat-label>Select Reciter</mat-label>
-      <mat-select placeholder="Reciter" formControlName="reciter">
-        <mat-option *ngFor="let Reciter of reciters" value="reciter.id">{{ Reciter.name }}</mat-option>
+      <mat-select [(ngModel)]="selectedReciterId" name="reciter">
+        <mat-option *ngFor="let reciter of reciters; trackBy:trackByFn" [value]="reciter.id">{{ reciter.name }}</mat-option>
       </mat-select>
     </mat-form-field>
     <mat-form-field *ngIf = "surahs" appearance="outline">
       <mat-label>Select Surah</mat-label>
-      <mat-select placeholder="Surah" formControlName="surah">
-        <mat-option *ngFor="let Surah of surahs; trackBy:trackByFn" value="surah.number">
-          {{ Surah.number }} - {{ Surah.name }}
+      <mat-select [(ngModel)]="selectedSurahNumber" name="surah">
+        <mat-option *ngFor="let surah of surahs; trackBy:trackByFn" [value]="surah.number">
+          {{ surah.number }} - {{ surah.name }}
         </mat-option>
       </mat-select>
     </mat-form-field>
     <div class="activation mat-form-field-wrapper">
-      <button mat-fab class="play-button" color="primary">
+      <button mat-fab class="play-button" color="primary" [routerLink]="[ '/playback', { surahNumber: selectedSurahNumber, reciterId: selectedReciterId }]">
         <mat-icon>play_arrow</mat-icon>
       </button>
     </div>
