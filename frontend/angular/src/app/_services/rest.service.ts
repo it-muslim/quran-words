@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment'; 
 import { Reciter } from "src/app/_models/reciter.model";
 import { SurahMain, Surah } from "src/app/_models/surah.model";
@@ -28,7 +28,7 @@ export class RestService {
     return this.http.get<Surah>(`${endpoint}surahs/${number}`);
   }
 
-  getRecitations(reciterId: number, surahNumber: number): Observable<Array<Recitation>> {
+  getRecitations(surahNumber: number, reciterId: number): Observable<Array<Recitation>> {
     return this.http.get<Array<Recitation>>(`${endpoint}recitations/?reciter_id=${reciterId}&surah_number=${surahNumber}`);
   }
  }
