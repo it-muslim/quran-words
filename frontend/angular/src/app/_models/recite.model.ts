@@ -6,6 +6,8 @@ export class Recitation implements Deserializable {
     segments: Array<Array<number>>;
     audio: string;
     reciter: number;
+    start: number;
+    end: number;
     duration: number;
 
     deserialize(input: any): this {
