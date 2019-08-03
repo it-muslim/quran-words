@@ -11,6 +11,8 @@ import { MaterialModule } from './material/material.module';
 import { HttpClientModule } from '@angular/common/http';
 import { PlaybackComponent } from './playback/playback.component';
 import { FormsModule } from '@angular/forms';
+import { RestService } from './_services/rest.service';
+import { RecitationsResolver } from './_resolvers/recitations.resolver';
 
 @NgModule({
   declarations: [
@@ -28,7 +30,7 @@ import { FormsModule } from '@angular/forms';
     HttpClientModule,
     FormsModule,
   ],
-  providers: [],
+  providers: [RestService, RecitationsResolver],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
