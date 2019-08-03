@@ -1,4 +1,5 @@
 import { Deserializable } from './deserializable.model';
+import { Recitation } from './recite.model';
 
 
 export class Ayah {
@@ -34,6 +35,17 @@ export class Surah implements Deserializable {
 
         this.ayahs = input.ayahs
             .map((ayah: Ayah) => new Ayah().deserialize(ayah));
+        return this;
+    }
+}
+
+export class SurahWithRecitations {
+    surah: Surah;
+    recitations: Array<Recitation>;
+
+    create(input: any): this {
+        this.surah = input[0];
+        this.recitations = input[1];
         return this;
     }
 }

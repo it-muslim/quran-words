@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, forkJoin } from 'rxjs';
 import { environment } from 'src/environments/environment';
 import { Reciter, Recitation } from 'src/app/_models/recite.model';
-import { SurahMain, Surah } from 'src/app/_models/quran.model';
+import { SurahMain, Surah, SurahWithRecitations } from 'src/app/_models/quran.model';
 import { map, catchError } from 'rxjs/operators';
 
 
@@ -57,5 +57,16 @@ export class RestService {
   getRecitations(surahNumber: number, reciterId: number): Observable<Array<Recitation>> {
     return this.http.get<Array<Recitation>>(`${endpoint}recitations/?reciter_id=${reciterId}&surah_number=${surahNumber}`)
       .pipe(map(data => data.map(recitationData => new Recitation().deserialize(recitationData))));
+  }
+
+  getAyahRecitations(surahNumber: number, reciterId: number): Observable<SurahWithRecitations> {
+
+    const surah = this.getSurah(surahNumber);
+    const recitations = this.getRecitations(surahNumber, reciterId);
+
+    return forkJoin([surah, recitations])
+      .pipe(map((result) => {
+        return new SurahWithRecitations().create(result);
+      }));
   }
 }
