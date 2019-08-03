@@ -1,11 +1,7 @@
 <div class="playback">
-    <button (click)="playAyahs()">Start</button>
-
   <div  class="ayah" *ngIf="currentAyah">
     <span class="word"  *ngFor="let word of currentAyah.wordsArray">
        {{ word }}
     </span>
   </div>
-  <!-- <div *ngFor="let ayahReciation of surahRecitation">{{ ayahReciation.segments }}</div>
-  <div class="ayah" *ngFor="let ayah of ayahs">{{ ayah.text }}</div> -->
 </div>
