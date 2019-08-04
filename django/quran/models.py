@@ -11,6 +11,9 @@ class Surah(models.Model):
 
     def __str__(self):
         return f"{self.name}: ({self.number})"
+    
+    class Meta:
+        ordering = ['number']
 
 
 class Ayah(models.Model):
@@ -24,3 +27,6 @@ class Ayah(models.Model):
 
     def __str__(self):
         return f"{self.surah.number:03d}{self.number:03d}"
+
+    class Meta:
+        ordering = ['number']
