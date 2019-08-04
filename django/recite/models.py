@@ -64,6 +64,9 @@ class Recitation(models.Model):
 
     def __str__(self):
         return f"{self.reciter}: ({self.ayah})"
+    
+    class Meta:
+        ordering = ['ayah']
 
 
 @receiver(models.signals.post_delete, sender=Reciter)
