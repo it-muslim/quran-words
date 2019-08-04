@@ -1,6 +1,6 @@
 <div class="playback">
   <div  class="ayah" *ngIf="currentAyah">
-    <span class="word"  *ngFor="let word of currentAyah.wordsArray">
+    <span @ayahChangeTrigger class="word"  *ngFor="let word of currentAyah.wordsArray">
        {{ word }}
     </span>
   </div>
