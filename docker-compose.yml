@@ -25,15 +25,6 @@ services:
     volumes:
       - ./postgres:/var/lib/postgresql/data
 
-  adminer:
-    container_name: adminer
-    image: adminer
-    restart: always
-    ports:
-      - "8080:8080"
-    env_file:
-      - ./.env
-
   angular:
     container_name: angular
     command: "npm run build -- --output-path=./dist/out --configuration=production"
