@@ -2,12 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { RestService } from 'src/app/_services/rest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Ayah, SurahWithRecitations } from '../_models/quran.model';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 
 @Component({
   selector: 'app-playback',
   templateUrl: './playback.component.html',
-  styleUrls: ['./playback.component.scss']
+  styleUrls: ['./playback.component.scss'],
+  animations: [
+    trigger('ayahChangeTrigger', [
+      transition(':enter', [
+        style({ opacity: 0 }),
+        animate('.5s'),
+      ]),
+    ]),
+  ]
 })
 
 export class PlaybackComponent implements OnInit {
@@ -26,16 +35,25 @@ export class PlaybackComponent implements OnInit {
     let delay = 0;
 
     this.surahRecitation.surah.ayahs.forEach((ayah: Ayah) => {
-      setTimeout(() => {
-        this.currentAyah = ayah;
-      }, delay);
-
-      const duration = this.surahRecitation.recitations
+      const currentRecitation = this.surahRecitation.recitations
         .find(recitation => {
           return recitation.ayah === ayah.number;
-        }).duration;
-      delay += duration;
+        });
+
+      setTimeout(() => {
+        this.currentAyah = ayah;
+        this.playAudio(currentRecitation.audio);
+      }, delay);
+
+      delay += currentRecitation.duration;
+
     });
   }
 
+  playAudio(audioPath: string) {
+    const audio = new Audio();
+    audio.src = audioPath;
+    audio.load();
+    audio.play();
+  }
 }
