@@ -1,5 +1,8 @@
-# Quran Words
+# Quran Mobi
 [![Build Status](https://travis-ci.org/it-muslim/quran-words.svg?branch=master)](https://travis-ci.org/it-muslim/quran-words)
+
+Link to project [Quran Mobi App](http://quran.mobi/)
+
 ## API Setup
 ### Requirements
 *Production*:
@@ -29,7 +32,7 @@ Run the following terminal commands to get started:
 - `docker-machine start default`
 - `cd quran-words`
 - `cp .env.example .env`
-- Edit .env file DJANGO_EXECUTION_ENVIRONMENT line, to run project with postgres database `DJANGO_EXECUTION_ENVIRONMENT=PRODUCTION` `DEBUG=0`
+- Edit .env file DJANGO_EXECUTION_ENVIRONMENT line, to run project with postgres database `DJANGO_EXECUTION_ENVIRONMENT=PRODUCTION` and `DEBUG=0`
     - Windows: If it's first time you run project on machine, create volume to store persistent data (postgres) `docker volume create --name=postgres` and run `docker-compose -f docker-compose-win.yml up`
     - Linux/macOS: `docker-compose up`
 - Check  containers are running:
