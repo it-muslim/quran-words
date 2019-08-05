@@ -1,7 +1,9 @@
-<div class="playback">
-  <div  class="ayah" *ngIf="currentAyah">
-    <span @ayahChangeTrigger class="word"  *ngFor="let word of currentAyah.wordsArray">
-       {{ word }}
-    </span>
-  </div>
-</div>
+<mat-card class="playback" tabindex="-1">
+  <mat-card-content class="content">
+    <div  class="ayah" *ngIf="currentAyah">
+      <span @ayahChangeTrigger class="word"  *ngFor="let word of currentAyah.wordsArray">
+        {{ word }}
+      </span>
+    </div>
+  </mat-card-content>
+</mat-card>

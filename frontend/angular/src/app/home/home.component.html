@@ -1,5 +1,5 @@
-<div class="home">
-  <div class="forms">
+<mat-card class="home" tabindex="-1">
+  <mat-card-content class="forms">
     <mat-form-field *ngIf = "(rest.reciters$ | async)" appearance="outline">
       <mat-label>Select Reciter</mat-label>
       <mat-select [(ngModel)]="selectedReciterId" name="reciter">
@@ -19,5 +19,5 @@
         <mat-icon>play_arrow</mat-icon>
       </button>
     </div>
-  </div>
-</div>
+  </mat-card-content>
+</mat-card>
