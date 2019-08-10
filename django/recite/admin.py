@@ -9,7 +9,7 @@ from zipfile import ZipFile
 from django import forms
 from django.contrib import admin
 from django.core.exceptions import ValidationError
-from django.core.files import File
+from django.conf import settings
 from django.forms import BaseInlineFormSet
 
 from quran.models import Surah, Ayah
@@ -44,7 +44,20 @@ class RecitationInline(admin.TabularInline):
 class ReciterForm(forms.ModelForm):
     """Reciter Form has additional segments_file field of Recitations model"""
     segments_file = forms.FileField()
-    audio_zip_file = forms.FileField()
+    audio_zip_file = forms.FileField(required=False)
+    audio_external_pattern = forms.URLField(
+        required=False, widget=forms.URLInput(attrs={'size': 80}),
+        help_text="For example: http://example.com/{surah}{ayah}.mp3 <br> {surah} and {ayah} required")
+
+    def clean(self):
+        cleaned_data = super().clean()
+        audio_zip_field = cleaned_data.get("audio_zip_file")
+        pattern = cleaned_data.get("audio_external_pattern")
+
+        if not audio_zip_field and (not pattern or "{surah}" not in pattern or "{ayah}" not in pattern):
+            raise forms.ValidationError(
+                "Please provide audio zip file or proper external audio url pattern."
+            )
 
     class Meta:
         model = Reciter
@@ -75,47 +88,67 @@ class ReciterAdmin(admin.ModelAdmin):
         segments_file = form.cleaned_data['segments_file'].file
         csv_content_list = self.get_csv_list(request.encoding, segments_file)
         segments_dict = self.get_segments_dict(csv_content_list)
+        slug = form.cleaned_data['slug']
 
-        with tempfile.TemporaryDirectory() as temp_dir:
-            # Extract zipped audio files to a temp directory
-            audio_zip_file = form.cleaned_data['audio_zip_file']
-            audio_files = ZipFile(audio_zip_file, 'r')
+        audio_zip_file = form.cleaned_data.get('audio_zip_file')
+        pattern_field = form.cleaned_data.get('audio_external_pattern')
 
-            audio_files.extractall(temp_dir)
+        # Unzip or link audio files for recitations
+        file_links = None
+        if audio_zip_file:
+            file_links = self.get_file_links_dict(audio_zip_file, slug, segments_dict)
+        else:
+            file_links = self.create_external_file_links_dict(pattern_field, segments_dict)
 
-            # let's create dict file_paths[surah][ayah] = file_path
-            file_paths = self.get_file_paths_dict(temp_dir)
-            self.check_segments_has_files(segments_dict, file_paths)
-            # let's create Recitations from segments and file_paths
-            for surah_number, ayahs in segments_dict.items():
-                for ayah_number, segments in ayahs.items():
-                    with open(file_paths[surah_number][ayah_number], 'rb')\
-                            as audio_file:
+        self.check_segments_has_files(segments_dict, file_links)
 
-                        file_ayah = File(audio_file)
-                        surah = Surah.objects.get(
-                            number=surah_number
-                        )
-                        ayah = Ayah.objects.get(
-                            number=ayah_number,
-                            surah=surah_number,
-                        )
-                        Recitation.objects.get_or_create(
-                            surah=surah,
-                            ayah=ayah,
-                            reciter=obj,
-                            segments=segments,
-                            audio=file_ayah
-                        )
+        # Create recitations from segments and file_links
+        for surah_number, ayahs in segments_dict.items():
+            for ayah_number, segments in ayahs.items():
+
+                audio_link = file_links[surah_number][ayah_number]
+
+                surah = Surah.objects.get(
+                    number=surah_number
+                )
+                ayah = Ayah.objects.get(
+                    number=ayah_number,
+                    surah=surah_number,
+                )
+                Recitation.objects.get_or_create(
+                    surah=surah,
+                    ayah=ayah,
+                    reciter=obj,
+                    segments=segments,
+                    audio=audio_link
+                )
 
     @staticmethod
-    def check_segments_has_files(segments_dict, file_paths):
-        '''Check if each segments row has corresponding audio file'''
+    def create_external_file_links_dict(pattern_field, segments_dict):
+        """Create paths for external sources provided in pattern field."""
+        file_links = defaultdict(lambda: defaultdict(int))
+
+        for surah_number, ayahs in segments_dict.items():
+            for ayah_number, _segments in ayahs.items():
+                surah = f"{surah_number:03d}"
+                ayah = f"{ayah_number:03d}"
+
+                formed_link = pattern_field.replace("{surah}", surah).replace("{ayah}", ayah)
+                file_links[surah_number][ayah_number] = formed_link
+
+        return file_links
+
+    @staticmethod
+    def check_segments_has_files(segments_dict, file_links):
+        """Check if each segments row has corresponding audio file"""
         not_found_files_for_segments = []
+
+        if not file_links:
+            raise ValidationError(message="No audio files provided")
 
         for surah_number, ayahs in segments_dict.items():
             for ayah_number, segments in ayahs.items():
-                if not file_paths[surah_number][ayah_number]:
+                if not file_links[surah_number][ayah_number]:
                     not_found_files_for_segments.append(
                         f"{surah_number:03d}{ayah_number:03d}.mp3")
         if not_found_files_for_segments:
@@ -125,29 +158,46 @@ class ReciterAdmin(admin.ModelAdmin):
             )
 
     @staticmethod
-    def get_file_paths_dict(directory):
+    def get_file_links_dict(audio_zip_file, slug, segments_dict):
         """
         Process audio zip file uploaded and create dict
-        :return: file_paths[surah][ayah] = file_path
+        :return: file_links[surah][ayah] = file_link
         """
-        file_paths = defaultdict(lambda: defaultdict(int))
+        # Create directories for surahs
+        recitation_dir = os.path.join(settings.MEDIA_ROOT, 'recite', str(slug))
+        for surah, _ayah in segments_dict.items():
+            surah_dir = os.path.join(recitation_dir, f"{surah:03d}")
+            if not os.path.exists(surah_dir):
+                os.makedirs(surah_dir)
 
-        for root, _directories, files in os.walk(directory):
-            for filename in files:
-                if filename.endswith('.mp3'):
-                    filepath = os.path.join(root, filename)
+        file_links = defaultdict(lambda: defaultdict(int))
 
-                    # extract surah and ayah number from filename
-                    surah_str = filename[:3]
-                    ayah_str = filename[3:6]
-                    try:
-                        surah_number = int(surah_str)
-                        ayah_number = int(ayah_str)
-                    except ValueError:
-                        print(f"Not normal format mp3 file {filename} ignored")
-                    else:
-                        file_paths[surah_number][ayah_number] = filepath
-        return file_paths
+        with tempfile.TemporaryDirectory(dir=recitation_dir) as temp_dir:
+            # Extract zipped audio files to a temp directory
+            audio_files = ZipFile(audio_zip_file, 'r')
+            audio_files.extractall(temp_dir)
+
+            # let's create dict file_paths[surah][ayah] = file_path
+            for root, _directories, files in os.walk(temp_dir):
+                for filename in files:
+                    if filename.endswith('.mp3'):
+                        # extract surah and ayah number from filename
+                        surah_str = filename[:3]
+                        ayah_str = filename[3:6]
+                        try:
+                            surah_number = int(surah_str)
+                            ayah_number = int(ayah_str)
+                        except ValueError:
+                            print(f"Not normal format mp3 file {filename} ignored")
+                        else:
+                            temp_filepath = os.path.join(os.path.abspath(root), filename)
+                            formed_filepath = os.path.join(recitation_dir, filename[:3], filename[3:])
+                            # move temp file to folder
+                            os.link(temp_filepath, formed_filepath)
+                            # create link for file
+                            file_link = f"recite/{slug}/{filename[:3]}/{filename[3:]}"
+                            file_links[surah_number][ayah_number] = file_link
+        return file_links
 
     @staticmethod
     def get_csv_list(encoding, segments_file):
