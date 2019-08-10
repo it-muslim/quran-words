@@ -20,7 +20,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('segments', recite.fields.SegmentsField()),
-                ('audio', models.FileField(upload_to=recite.models.Recitation.get_audio_directory)),
+                ('audio', models.CharField(max_length=200)),
                 ('ayah', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='recitations', to='quran.Ayah')),
             ],
             options={

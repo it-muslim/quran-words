@@ -49,22 +49,11 @@ class Recitation(models.Model):
         Reciter, on_delete=models.CASCADE, related_name="recitations"
     )
     segments = SegmentsField()
-
-    def get_audio_directory(self, filename):
-        file_extension = os.path.splitext(os.path.basename(filename))[1]
-        return os.path.join(
-            "recite",
-            self.reciter.slug,
-            f"{self.ayah.surah.number:03d}",
-            f"{self.ayah.number:03d}{file_extension}",
-        )
-
-    audio = models.FileField(
-        upload_to=get_audio_directory)
+    audio = models.CharField(max_length=200)
 
     def __str__(self):
         return f"{self.reciter}: ({self.ayah})"
-    
+
     class Meta:
         ordering = ['ayah']
 
