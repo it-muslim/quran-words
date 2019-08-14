@@ -26,6 +26,7 @@ export class PlaybackComponent implements OnInit, OnDestroy {
   stopped = false;
   surahRecitation: SurahWithRecitations;
   currentAyah: Ayah;
+  currentWordIndex: number;
 
   ngOnInit() {
     this.surahRecitation = this.route.snapshot.data.recitations;
@@ -33,7 +34,7 @@ export class PlaybackComponent implements OnInit, OnDestroy {
   }
 
   playAyahs() {
-    let delay = 0;
+    let delayAyah = 0;
 
     this.surahRecitation.surah.ayahs.forEach((ayah: Ayah) => {
       const currentRecitation = this.surahRecitation.recitations
@@ -47,11 +48,29 @@ export class PlaybackComponent implements OnInit, OnDestroy {
         }
         this.currentAyah = ayah;
         this.playAudio(currentRecitation.audio);
-      }, delay);
+        this.highLightWords(currentRecitation);
+      }, delayAyah);
 
-      delay += currentRecitation.duration;
-
+      delayAyah += currentRecitation.duration + 1;
     });
+  }
+
+  highLightWords(currentRecitation) {
+    let delayWord = 0;
+
+    for (let index = 0; index < currentRecitation.segments.length + 1; index++) {
+      const segment = currentRecitation.segments[index];
+      setTimeout(() => {
+        if (this.stopped) {
+          return false;
+        }
+        this.currentWordIndex = index;
+      }, delayWord);
+
+      if (segment) {
+        delayWord += (segment[1] - segment[0]);
+      }
+    }
   }
 
   playAudio(audioPath: string) {
