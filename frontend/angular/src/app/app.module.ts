@@ -13,6 +13,7 @@ import { PlaybackComponent } from './playback/playback.component';
 import { FormsModule } from '@angular/forms';
 import { RestService } from './_services/rest.service';
 import { RecitationsResolver } from './_resolvers/recitations.resolver';
+import { ThemeComponent } from './theme/theme.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { RecitationsResolver } from './_resolvers/recitations.resolver';
     NavbarComponent,
     HomeComponent,
     PlaybackComponent,
+    ThemeComponent,
   ],
   imports: [
     MaterialModule,
