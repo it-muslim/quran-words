@@ -1,12 +1,9 @@
 <div class="navbar-container">
   <mat-toolbar color="primary" class="navbar" [ngClass]="{'show': showNavbar}">
-    <button
-      type="button"
-      aria-label="Toggle sidenav"
-      mat-icon-button>
+    <button type="button" aria-label="Toggle sidenav" mat-icon-button (click)="toggleLeftSidenav()">
       <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
     </button>
-    <div><a [routerLink] = "[ '/' ]">Quran Words</a></div>
+    <div><a [routerLink]="[ '/' ]">Quran Mobi</a></div>
     <div>
     </div>
   </mat-toolbar>

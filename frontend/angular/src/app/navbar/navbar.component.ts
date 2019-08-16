@@ -1,4 +1,5 @@
-import { Component, HostListener } from '@angular/core';
+import { Component, HostListener, ViewChild } from '@angular/core';
+import { SidenavService } from '../_services/sidenav.service';
 
 @Component({
   selector: 'app-navbar',
@@ -7,6 +8,10 @@ import { Component, HostListener } from '@angular/core';
 })
 
 export class NavbarComponent{
+
+  constructor(private sidenav: SidenavService) { }
+
+  sidenavOpen = false;
   showNavbar = true;
 
   @HostListener('body:mouseleave', ['$event'])
@@ -19,5 +24,11 @@ export class NavbarComponent{
   @HostListener('body:mouseenter', ['$event'])
   MouseBack(event: MouseEvent) {
     this.showNavbar = false;
+  }
+
+  toggleLeftSidenav() {
+    this.sidenavOpen = !this.sidenavOpen;
+    this.sidenav.toggle();
+    this.sidenavOpen ? this.showNavbar = true : this.showNavbar = false;
   }
 }
