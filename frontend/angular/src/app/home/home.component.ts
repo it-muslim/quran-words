@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Router } from '@angular/router';
 import { RestService } from 'src/app/_services/rest.service';
-import { Reciter } from 'src/app/_models/recite.model';
 import { SurahMain } from 'src/app/_models/quran.model';
+
 
 @Component({
   selector: 'app-home',

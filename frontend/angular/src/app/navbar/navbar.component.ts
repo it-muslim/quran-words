@@ -24,6 +24,7 @@ export class NavbarComponent{
   @HostListener('body:mouseenter', ['$event'])
   MouseBack(event: MouseEvent) {
     this.showNavbar = false;
+    this.sidenav.close();
   }
 
   toggleLeftSidenav() {

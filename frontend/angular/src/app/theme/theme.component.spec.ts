@@ -1,34 +1,29 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { HomeComponent } from './home.component';
+import { ThemeComponent } from './theme.component';
 import { MaterialModule } from '../material/material.module';
 import { FormsModule } from '@angular/forms';
-import { RouterTestingModule } from '@angular/router/testing';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-
-describe('HomeComponent', () => {
-  let component: HomeComponent;
-  let fixture: ComponentFixture<HomeComponent>;
+describe('ThemeComponent', () => {
+  let component: ThemeComponent;
+  let fixture: ComponentFixture<ThemeComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule,
         MaterialModule,
         FormsModule,
-        HttpClientTestingModule,
         BrowserAnimationsModule,
       ],
       declarations: [
-        HomeComponent,
+        ThemeComponent,
       ]
     })
     .compileComponents();
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(HomeComponent);
+    fixture = TestBed.createComponent(ThemeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

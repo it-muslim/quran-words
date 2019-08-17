@@ -57,13 +57,22 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "test": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.test.ts"
+                }
+              ]
             }
           }
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "angular:build"
+            "browserTarget": "angular:build",
+            "host": "0.0.0.0"
           },
           "configurations": {
             "production": {
@@ -106,6 +115,12 @@
               "**/node_modules/**"
             ]
           }
+        },
+        "serve-e2e": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "angular:build:test"
+          }
         }
       }
     },
@@ -118,7 +133,7 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "angular:serve"
+            "devServerTarget": "angular:serve-e2e"
           },
           "configurations": {
             "production": {

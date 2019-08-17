@@ -9,4 +9,6 @@ install:
 - docker-compose -f docker-compose-testing.yml build
 
 script:
-- docker-compose -f docker-compose-testing.yml run -e DJANGO_SETTINGS_MODULE=config.settings.development --no-deps --rm backend python3 manage.py test
+- docker-compose -f docker-compose-testing.yml run --no-deps --rm web python3 manage.py test
+- docker-compose -f docker-compose-testing.yml run --no-deps --rm angular npm run test
+- docker-compose -f docker-compose-testing.yml up --abort-on-container-exit

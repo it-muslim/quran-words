@@ -3,6 +3,7 @@ import { RestService } from 'src/app/_services/rest.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Ayah, SurahWithRecitations } from '../_models/quran.model';
 import { trigger, state, style, animate, transition } from '@angular/animations';
+import { ThemeService } from '../_services/theme.service';
 
 
 @Component({
@@ -21,12 +22,13 @@ import { trigger, state, style, animate, transition } from '@angular/animations'
 
 export class PlaybackComponent implements OnInit, OnDestroy {
 
-  constructor(public rest: RestService, private route: ActivatedRoute, private router: Router) { }
+  constructor(public rest: RestService, private route: ActivatedRoute, private router: Router, public themeService: ThemeService) { }
 
   stopped = false;
   surahRecitation: SurahWithRecitations;
   currentAyah: Ayah;
   currentWordIndex: number;
+  theme = this.themeService.theme || null;
 
   ngOnInit() {
     this.surahRecitation = this.route.snapshot.data.recitations;
@@ -34,6 +36,10 @@ export class PlaybackComponent implements OnInit, OnDestroy {
   }
 
   playAyahs() {
+    if (!this.surahRecitation) {
+      return false;
+    }
+
     let delayAyah = 0;
 
     this.surahRecitation.surah.ayahs.forEach((ayah: Ayah) => {
