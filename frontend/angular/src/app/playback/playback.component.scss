@@ -8,14 +8,10 @@
 .ayah {
   font-family: "MeQuran";
   font-size: 2.5rem;
+  color: #272727;
 }
 
 .word {
-  color: black;
-  transition: color 0.2s linear;
+  transition: all 0.2s linear;
 }
 
-.highlighted {
-  color: red;
-  transition: color 0.2s linear;
-}

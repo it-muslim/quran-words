@@ -1,14 +1,27 @@
 version: "3"
 services:
-  backend:
+  web:
     build: ./django/
     restart: on-failure
     environment:
-      - DJANGO_SECRET_KEY=secret123
-      - DEBUG=1
       - ALLOWED_HOSTS=*
-    command: python3 manage.py runserver 0.0.0.0:8000
+      - DJANGO_SECRET_KEY=SomeKey
+      - DJANGO_EXECUTION_ENVIRONMENT=DEVELOPMENT
+      - DEBUG=1
+    command: sh -c "python3 manage.py migrate && python3 manage.py runserver 0.0.0.0:8000"
     volumes:
       - ./django/:/www
-    ports:
-      - "8000:8000"
+    expose:
+      - "8000"
+
+  angular:
+    depends_on:
+      - "web"
+    build:
+      context: ./frontend
+      dockerfile: TestDockerfile
+    expose:
+      - "4200"
+    volumes:
+      - ./frontend/angular/dist:/usr/src/app/dist
+    command: ng e2e --configuration=test

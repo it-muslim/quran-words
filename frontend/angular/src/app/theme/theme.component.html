@@ -1,0 +1,37 @@
+<mat-toolbar color="accent">Theme</mat-toolbar>
+<mat-nav-list>
+    <div mat-list-item>
+        <label class="sliderLabel">
+            <span>Font size</span>
+        </label>
+        <mat-slider min=".3" max="10" step=".3" value="2" name="fontsize" [(ngModel)]="theme.fontsize"></mat-slider>
+        {{ theme.fontsize }}
+    </div>
+    <div mat-list-item>
+        <mat-form-field>
+            <input matInput name="bgcolor" type="color" placeholder="Background color"  [(ngModel)]="theme.bgcolor">
+        </mat-form-field>
+    </div>
+    <div mat-list-item>
+        <mat-form-field>
+            <input matInput name="color" type="color" placeholder="Font color"  [(ngModel)]="theme.color">
+        </mat-form-field>
+    </div>
+    <div mat-list-item>
+        <mat-form-field>
+            <input matInput name="highlighted" type="color" placeholder="Highlighted font color"  [(ngModel)]="theme.highlighted">
+        </mat-form-field>
+    </div>
+    <div mat-list-item>
+        <mat-form-field>
+            <input matInput name="shadow" type="color" placeholder="Text shadow color"  [(ngModel)]="theme.shadowcolor">
+        </mat-form-field>
+    </div>
+    <div mat-list-item>
+        <label class="sliderLabel">
+            <span>Text shadow size</span>
+        </label>
+        <mat-slider min="0" max="10" step="1" value="2" name="shadowsize" [(ngModel)]="theme.shadowsize"></mat-slider>
+        {{ theme.shadowsize }}
+    </div>
+</mat-nav-list>

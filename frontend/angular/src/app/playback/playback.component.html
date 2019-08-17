@@ -1,7 +1,10 @@
-<mat-card class="playback" tabindex="-1">
+<mat-card *ngIf="theme" class="playback" tabindex="-1" [style.background-color]="theme.bgcolor">
   <mat-card-content class="content">
-    <div class="ayah" *ngIf="currentAyah">
-      <span @ayahChangeTrigger class="word" *ngFor="let word of currentAyah.wordsArray; index as i" [class.highlighted]="i == currentWordIndex">
+    <div class="ayah" *ngIf="currentAyah" [style.font-size]="theme.getFontSize()" [style.color]="theme.color" [style.text-shadow]="theme.getShadow()">
+      <span
+        @ayahChangeTrigger class="word"
+        *ngFor="let word of currentAyah.wordsArray; index as i"
+        [style.color]="i == currentWordIndex ? theme.highlighted : theme.color">
         {{ word }}
       </span>
     </div>

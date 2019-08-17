@@ -3,7 +3,7 @@
 
 Link to project [Quran Mobi App](http://quran.mobi/)
 
-## API Setup
+## API
 ### Requirements
 *Production*:
 
@@ -15,7 +15,7 @@ Link to project [Quran Mobi App](http://quran.mobi/)
 [python3.6 or later](https://www.python.org/), 
 [pip](https://pypi.python.org/pypi)
 
-### Setup steps
+### Setup
 
 Run the following terminal commands to get started:
 
@@ -48,15 +48,27 @@ You can run the tests using the following command
 Additional information can be found in
 [our wiki](https://github.com/it-muslim/quran-words/wiki/Tests)
 
-### API Documentation
+### Documentation
 
 You can access documentation by relative `/api/` path of running api server
 API schema located at `/api/schema/`
 
-## Application Setup
+### Administration
+    Administration panel available at `http://url-or-ip-address/admin/`
 
+
+## Client application
+
+### Requirements
+    - Client built on Angular and requires Node.js version 10.9.0 or later.
+
+### Setup
 Run the following terminal commands to get started:
     `cd frontend/angular`
     `npm install`
     `npm run start`
     access frontend at [http://127.0.0.1:4200](http://127.0.0.1:4200)
+
+### Testing
+ - Karma `npm run test`
+ - Protractor `npm run e2e`
