@@ -1,6 +1,6 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
 import { environment } from '../environments/environment';
-import { MatSidenav } from '@angular/material';
+import { MatSidenav } from '@angular/material/sidenav';
 import { SidenavService } from './_services/sidenav.service';
 
 @Component({
@@ -15,7 +15,7 @@ export class AppComponent implements OnInit {
 
   env = environment;
 
-  @ViewChild('sidenav') public sidenav: MatSidenav;
+  @ViewChild('sidenav', { static: true }) public sidenav: MatSidenav;
 
   ngOnInit(): void {
     this.sidenavService.setSidenav(this.sidenav);
