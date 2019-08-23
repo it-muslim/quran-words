@@ -24,4 +24,4 @@ services:
       - "4200"
     volumes:
       - ./frontend/angular/dist:/usr/src/app/dist
-    command: ng e2e --configuration=test
+    command: ng e2e
