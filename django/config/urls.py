@@ -9,20 +9,31 @@ from rest_framework.schemas import get_schema_view
 
 from quran.api import views as quran_views
 from recite.api import views as recite_views
+from django.views.generic import TemplateView
 
 router = routers.SimpleRouter()
 router.register(
-    r'surahs', quran_views.SurahListRetrieveView, base_name="surah")
+    r'surahs', quran_views.SurahListRetrieveView, basename="surah")
 router.register(
-    r'reciters', recite_views.ReciterListRetrieveView, base_name="reciter")
+    r'reciters', recite_views.ReciterListRetrieveView, basename="reciter")
 router.register(
     r'recitations', recite_views.RecitationListRetrieveView,
-    base_name="recitation")
+    basename="recitation")
+
 
 urlpatterns = [
-    url('api/', include((router.urls, 'api'), namespace='api')),
-    path('api/', include_docs_urls(title='Quran API Documentation')),
-    path('api/schema/', get_schema_view(title="Quran API schema")),
+    path('openapi', get_schema_view(
+        title="Quran API",
+        patterns=[
+            path('api/', include(router.urls)),
+        ]
+    ), name='openapi-schema'),
+
+    path('api/', TemplateView.as_view(
+        template_name='swagger-ui.html',
+        extra_context={'schema_url': 'openapi-schema'}
+    ), name='swagger-ui'),
+
     path('admin/', admin.site.urls),
 ]
 

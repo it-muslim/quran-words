@@ -1,9 +1,8 @@
-import coreapi
-import coreschema
 from rest_framework import exceptions, mixins, schemas, status, viewsets
 
 from ..models import Recitation, Reciter
 from .serializers import RecitationSerializer, ReciterSerializer
+from rest_framework.schemas.openapi import AutoSchema
 
 
 class UnprocessableEntityError(exceptions.APIException):
@@ -57,25 +56,27 @@ class RecitationListRetrieveView(
         raise exceptions.NotFound()
 
     # Custom schema for core api documentation.
-    schema = schemas.AutoSchema(
-        manual_fields=[
-            coreapi.Field(
-                'reciter_id',
-                True,
-                "query",
-                coreschema.Integer(
-                    title='Reciter id',
-                    description='A unique integer value identifying reciter.',
-                ),
-            ),
-            coreapi.Field(
-                'surah_number',
-                True,
-                "query",
-                coreschema.Integer(
-                    title='Surah number',
-                    description='A unique integer value identifying surah.',
-                ),
-            ),
-        ]
-    )
+
+    class ReciterSchema(AutoSchema):
+
+        def get_operation(self, path, method):
+            operation = super().get_operation(path, method)
+
+            operation["parameters"].append({
+                "name": "reciter_id",
+                "in": "query",
+                "required": True,
+                "description": "Reciter id",
+                'schema': {'type': 'string'}
+            })
+
+            operation["parameters"].append({
+                "name": "surah_number",
+                "in": "query",
+                "required": True,
+                "description": "Surah number",
+                'schema': {'type': 'string'}
+            })
+            return operation
+
+    schema = ReciterSchema()
