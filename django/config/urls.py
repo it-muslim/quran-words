@@ -35,6 +35,8 @@ urlpatterns = [
     ), name='swagger-ui'),
 
     path('admin/', admin.site.urls),
+
+    url('api/', include((router.urls, 'api'), namespace='api')),
 ]
 
 if settings.DEBUG:
