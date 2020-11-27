@@ -34,6 +34,17 @@
             "es5BrowserSupport": true
           },
           "configurations": {
+            "development": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": true,
+              "extractCss": true,
+              "namedChunks": true,
+              "aot": false,
+              "extractLicenses": false,
+              "vendorChunk": true,
+              "buildOptimizer": false
+            },
             "production": {
               "fileReplacements": [
                 {
