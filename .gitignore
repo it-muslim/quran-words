@@ -5,8 +5,6 @@
 .vscode
 staticfiles/
 media/
-postgres/*
-!postgres/.gitkeep
-.pylintrc
 venv/
 collected_static/
+.groovylintrc.json
