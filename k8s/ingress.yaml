@@ -1,0 +1,41 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: nginx-ingress
+  annotations:
+    kubernetes.io/ingress.class: public
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/proxy-body-size: 2G
+    nginx.ingress.kubernetes.io/proxy-read-timeout: 600s
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: 600s
+    kubernetes.io/tls-acme: "true"
+    cert-manager.io/cluster-issuer: "letsencrypt-production"
+spec:
+  tls:
+  - hosts:
+    - "quran.mobi"
+    secretName: "quran-mobi-tls-acme"
+  rules:
+  - host: quran.mobi
+    http:
+      paths:
+      - path: /
+        backend:
+          serviceName: nginx
+          servicePort: 80
+      - path: /api/.*
+        backend:
+          serviceName: django
+          servicePort: 80
+      - path: /openapi
+        backend:
+          serviceName: django
+          servicePort: 80
+      - path: /adminer/.*
+        backend:
+          serviceName: adminer
+          servicePort: 80
+      - path: /admin/.*
+        backend:
+          serviceName: django
+          servicePort: 80

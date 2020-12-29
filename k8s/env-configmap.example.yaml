@@ -1,0 +1,20 @@
+# Second
+# TODO use env file as configmap
+# https://kubernetes.io/docs/concepts/configuration/configmap/#using-configmaps-as-files-from-a-pod
+apiVersion: v1
+data:
+  ALLOWED_HOSTS: "*"
+  DEBUG: "1"
+  DJANGO_EXECUTION_ENVIRONMENT: PRODUCTION
+  DJANGO_SECRET_KEY: SomeKey
+  POSTGRES_DB: mypgsqldb
+  POSTGRES_HOST: db
+  POSTGRES_PASSWORD: secret123
+  POSTGRES_PORT: "5432"
+  POSTGRES_USER: postgres
+  CONFIGURATION: production
+kind: ConfigMap
+metadata:
+  labels:
+    io.kompose.service: db-env
+  name: env

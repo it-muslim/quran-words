@@ -1,0 +1,35 @@
+# Create namespace first
+# `kubectl create namespace <namespace name>`
+# apply yaml with `kubectl create -f pv-pvc.yaml -n <namespace name>`
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: quran-words
+provisioner: microk8s.io/hostpath
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: quran-words-db-volume-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: quran-words
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: quran-words-app-volume-claim
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: quran-words
+  resources:
+    requests:
+      storage: 30Gi
