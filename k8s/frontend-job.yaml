@@ -1,0 +1,39 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  labels:
+    io.kompose.service: frontend
+  name: frontend-job
+spec:
+  template:
+    metadata:
+      labels:
+        io.kompose.service: frontend
+    spec:
+      containers:
+        - env:
+            - name: CONFIGURATION
+              valueFrom:
+                configMapKeyRef:
+                  key: CONFIGURATION
+                  name: env
+          args:
+            - npm
+            - run
+            - build
+            - --
+            - --output-path=./dist/out
+            - --configuration=$(CONFIGURATION)
+          image: localhost:32000/quran-words-frontend:latest
+          imagePullPolicy: ""
+          name: frontend
+          resources: {}
+          volumeMounts:
+            - mountPath: /frontend/angular/dist
+              name: quran-words-app-storage
+      restartPolicy: Never
+      volumes:
+        - name: quran-words-app-storage
+          persistentVolumeClaim:
+            claimName: quran-words-app-volume-claim
+status: {}

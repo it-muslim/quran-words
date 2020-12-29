@@ -32,7 +32,6 @@ services:
     image: localhost:32000/quran-words-frontend:latest
 
   nginx:
-    container_name: nginx
     build: ./nginx/
     volumes:
       - quran-words-app-volume:/var/app/
