@@ -1,48 +1,58 @@
 version: "3"
 services:
-  web:
-    build: ./django/
-    container_name: web
-    env_file:
-      - ./.env
-    entrypoint: "/www/entrypoint.sh"
-    command: "gunicorn config.wsgi -b 0.0.0.0:8000 --workers 3 --timeout 600"
-    volumes:
-      - ./django/:/www
-    ports:
-      - "8000:8000"
-    depends_on:
-      - db
-
   db:
-    container_name: db
-    image: "postgres:10.5-alpine"
+    image: "postgres:13.1-alpine"
     restart: always
     env_file:
       - ./.env
     expose:
       - "5432"
     volumes:
-      - ./postgres:/var/lib/postgresql/data
+      -  quran-words-db-volume:/var/lib/postgresql/data
 
-  angular:
-    container_name: angular
+  django:
+    build: ./django/
+    env_file:
+      - ./.env
+    entrypoint: "/app/entrypoint.sh"
+    command: "gunicorn config.wsgi -b 0.0.0.0:8000 --workers 3 --timeout 600"
+    volumes:
+      - quran-words-app-volume:/app/media
+      - quran-words-static-volume:/app/collected_static
+    depends_on:
+      - db
+    image: localhost:32000/quran-words-django:latest
+
+  frontend:
     command: npm run build -- --output-path=./dist/out --configuration=${CONFIGURATION}
     build:
       context: ./frontend
     volumes:
-      - ./frontend/angular/dist:/usr/src/app/dist
+      - quran-words-app-volume:/frontend/angular/dist
+    image: localhost:32000/quran-words-frontend:latest
 
   nginx:
     container_name: nginx
     build: ./nginx/
     volumes:
-      - ./nginx:/etc/nginx/conf.d
-      - ./django/media:/var/www/quran-words/media
-      - ./django/collected_static:/var/www/quran-words/collected_static
-      - ./frontend/angular/dist:/var/www/angular/dist
+      - quran-words-app-volume:/var/app/
+      - quran-words-static-volume:/var/app/static/
     ports:
       - "80:80"
     depends_on:
-      - angular
-      - web
+      - frontend
+      - django
+    image: localhost:32000/quran-words-nginx:latest
+  
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - "8111:8080"
+    env_file:
+      - ./.env
+
+volumes:
+  quran-words-db-volume: {}
+  quran-words-app-volume: {}
+  quran-words-static-volume: {}

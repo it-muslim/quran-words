@@ -1,26 +1,26 @@
-FROM alpine:3.8
+FROM python:3.9-alpine
 
 # init
-RUN mkdir /www
-WORKDIR /www
-COPY requirements/ /www/requirements
+RUN mkdir /app
+WORKDIR /app
+COPY requirements /app/requirements
 
 # setup
 RUN apk update
 RUN apk upgrade
 RUN apk --no-cache add \
-    python3 \
-    python3-dev \
     postgresql-client \
     postgresql-dev \
     build-base \
-    gettext
-RUN pip3 install --upgrade pip
-RUN pip3 install -r requirements/production.txt
+    gettext \
+    gcc musl-dev jpeg-dev zlib-dev libffi-dev cairo-dev pango-dev gdk-pixbuf-dev
+
+RUN pip install --upgrade pip
+RUN pip install -r requirements/production.txt
 
 # clean
-RUN apk del -r python3-dev postgresql
+RUN apk del -r postgresql
 
 # prep
 ENV PYTHONUNBUFFERED 1
-COPY . /www/
+COPY . /app/
