@@ -76,6 +76,14 @@
                   "with": "src/environments/environment.e2e.ts"
                 }
               ]
+            },
+            "local": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.local.ts"
+                }
+              ]
             }
           }
         },
@@ -91,6 +99,9 @@
             },
             "test": {
               "browserTarget": "angular:build:test"
+            },
+            "local": {
+              "browserTarget": "angular:build:local"
             }
           }
         },
