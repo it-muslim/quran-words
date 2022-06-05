@@ -24,8 +24,9 @@ Run the following terminal commands to get started:
 - `cd quran-words`
 - `cp .env.example .env`
 - `pip install -r django\requirements\development.txt`
-- `python django\manage.py runserver`
+- `python django\manage.py migrate`
 - `python django\manage.py createsuperuser`
+- `python django\manage.py runserver`
 
 *Production*
 - `git clone https://github.com/it-muslim/quran-words.git`

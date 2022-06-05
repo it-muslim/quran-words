@@ -2,7 +2,7 @@ export class Theme {
     fontsize = 2.5;
     bgcolor = '#eeeeee';
     color = '#272727';
-    highlighted = '#1d581d';
+    highlighted = '#64a367';
     shadowcolor = '#ffffff';
     shadowsize = 2;
 
